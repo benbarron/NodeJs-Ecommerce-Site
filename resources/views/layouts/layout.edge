@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/assets/vendor/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="/assets/vendor/admin-lte/admin-lte.css">
+    <link rel="stylesheet" href="/assets/vendor/toastr/toastr.min.css">
+    <link rel="stylesheet" href="/assets/css/app.css">
+    @!section('css')
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <title>NodeJs E-Commerce</title>
+  </head>
+  <body class="hold-transition layout-top-nav">
+    <div class="wrapper">
+      @include('partials/mainNav')
+
+      <div class="content-wrapper">
+        @include('partials/registerModal')
+        @include('partials/loginModal')
+
+        @if(hero) 
+          @include('partials/homeHero')
+        @endif
+        
+        @if(contentHeader)
+          @include('partials/contentHeader')
+        @endif
+
+        @!section('content')
+      </div>
+
+      <aside class="control-sidebar control-sidebar-dark">
+        <div class="p-3">
+          @include('partials/sidebar')
+        </div>
+      </aside>
+      @include('partials/footer')
+    </div>
+
+    <script src="/assets/vendor/jquery/jquery.min.js"></script>
+    <script src="/assets/vendor/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="/assets/vendor/admin-lte/admin-lte.js"></script>
+    <script src="/assets/vendor/toastr/toastr.min.js"></script>
+    <script src="/assets/js/app.js"></script>
+    @!section('js')
+  </body>
+</html>

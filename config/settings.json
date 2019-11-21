@@ -1,0 +1,15 @@
+{
+  "name": "NodeJs E-Commerce App",
+  "url": "http://localhost",
+  "debug": false,
+  "mode": "DEVELOPMENT",
+  "port": 5000,
+
+  "mongoUri": "mongodb://benjaminbarron:Lift4life!@localhost:27017/test",
+
+  "jwtSecret": "##",
+  "jwtLifetime": 1209600,
+
+  "sessionSecret": "##",
+  "sessionLifetime": 12096000
+}

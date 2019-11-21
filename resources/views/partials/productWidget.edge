@@ -1,0 +1,11 @@
+<div class="col-sm-12 col-md-6 col-lg-4 col-md-3">
+  <div class="product-widget">
+    <h5 class="product-name"> {{ product.name }}</h5>
+    <img class="product-image" src="{{ product.images[0] }}" alt="{{ product.name }}">
+    <div class="row p-2 px-4 d-flex justify-content-between">
+      <span><h6>$ {{ product.price }}</h6></span>
+      
+      <span><a href="/products/{{ product.id }}" class="btn btn-primary btn-sm">View Product</a></span>
+    </div>
+  </div>
+</div>

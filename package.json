@@ -1,0 +1,43 @@
+{
+  "name": "ShoppingCart",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "node .",
+    "server": "node .",
+    "server:watch": "nodemon .",
+    "assets": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "assets:watch": "npm run assets -- --watch",
+    "assets:prod": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.19.0",
+    "bcryptjs": "^2.4.3",
+    "cluster": "^0.7.7",
+    "colors": "^1.4.0",
+    "express": "^4.17.1",
+    "express-edge": "^2.0.1",
+    "express-session": "^1.17.0",
+    "fs": "0.0.1-security",
+    "http": "0.0.0",
+    "https": "^1.0.0",
+    "laravel-mix": "^5.0.0",
+    "mongoose": "^5.7.11",
+    "os": "^0.1.1",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "path": "^0.12.7",
+    "uuid": "^3.3.3"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.4",
+    "resolve-url-loader": "^3.1.0",
+    "sass": "^1.23.6",
+    "sass-loader": "^8.0.0",
+    "vue-template-compiler": "^2.6.10"
+  }
+}
