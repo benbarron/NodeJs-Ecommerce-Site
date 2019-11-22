@@ -2178,6 +2178,53 @@ document.addEventListener('DOMContentLoaded', function (e) {
   }
 });
 
+if (document.querySelector('#options-area')) {
+  var optionsAreaEL = document.querySelector('#options-area');
+  var i = 0; // var optionsArr = [];
+
+  document.querySelector('#add-option-btn').addEventListener('click', function (e) {
+    e.preventDefault();
+    var tempEL = document.createElement('div');
+    tempEL.className = "row row-".concat(i);
+    var out = "\n          <div class=\"col-sm-12\">\n            <div class=\"mb-2 row\">\n              <div class=\"col-sm-5\">\n                ".concat(i == 0 ? "<label for='option-".concat(i, "-method'>Option Display Method</label>") : '', "\n                <select name=\"option-").concat(i, "\" id=\"option-").concat(i, "\" class=\"form-control form-control-sm\" aria-label=\"Small\">\n                  <option value=\"dropdown\" class=\"form-control  form-control-sm\">Dropdown</option>\n                  <option value=\"radio-buttons\"  class=\"form-control form-control-sm\">Radio Buttons</option>\n                </select>\n              </div>\n            <div class=\"col-sm-5\">\n            ").concat(i == 0 ? "<label for='option-".concat(i, "-options'>Option Values</label>") : '', "\n              <input type=\"text\" class=\"form-control form-control-sm\" aria-label=\"Small\" id=\"option-").concat(i, "\" name=\"option-").concat(i, "-value\" placeholder=\"Values (Enter in comma separated list)\">\n            </div>\n\n          </div>\n          <hr>\n        </div>\n    ");
+    tempEL.innerHTML = out;
+    optionsAreaEL.appendChild(tempEL);
+    out = '';
+    i += 1;
+  });
+  document.querySelector('#remove-option-btn').addEventListener('click', function (e) {
+    e.preventDefault();
+    document.querySelector(".row-".concat(i - 1)).remove();
+    i -= 1;
+  });
+}
+
+if (document.querySelector('#product-images')) {
+  var k = 0;
+  document.querySelector('input#file-1').addEventListener('change', function (e) {
+    e.preventDefault();
+    var formData = new FormData();
+    formData.append('image', e.target.files[0]);
+    var headers = {
+      'Content-Type': 'multipart/form-data'
+    };
+    axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/accept-images', formData, headers).then(function (res) {
+      var inputEL = document.createElement('input');
+      inputEL.name = 'file-' + k;
+      inputEL.value = res.data.path;
+      inputEL.type = 'hidden';
+      document.querySelector('#image-inputs').appendChild(inputEL);
+      var imageEL = document.createElement('img');
+      imageEL.src = res.data.path;
+      imageEL.className = 'col-sm-2 my-3';
+      document.querySelector('#image-uploads').appendChild(imageEL);
+    })["catch"](function (err) {
+      console.log(err);
+    });
+    k += 1;
+  });
+}
+
 /***/ }),
 
 /***/ "./resources/sass/main.scss":

@@ -5,6 +5,7 @@ const MongoStore = require('connect-mongo')(session);
 const passport = require('passport');
 const mongoose = require('mongoose');
 const device = require('express-device');
+const fileUpload = require('express-fileupload');
 const { engine } = require('express-edge');
 
 const fs = require('fs');
@@ -14,7 +15,11 @@ const app = express();
 app.use(device.capture());
 
 app.use(express.json());
+app.use(fileUpload());
 app.use(express.urlencoded({ extended: true }));
+
+app.use('/assets', express.static('./public/assets'));
+app.use('/storage', express.static('./public/storage'));
 
 mongoose
   .connect(env('mongoLinuxUri'), {
@@ -45,9 +50,6 @@ app.set('views', path.resolve(__dirname, 'resources/views'));
 
 app.use(passport.initialize());
 app.use(passport.session());
-
-app.use('/assets', express.static('./public/assets'));
-app.use('/storage', express.static('./public/storage'));
 
 app.use((req, res, next) => {
   if (!req.session.cart) {
@@ -87,6 +89,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/api', require('./routes/api'));
+app.use('/admin', middleware.isAdmin, require('./routes/admin'));
 app.use(require('./routes/web'));
 
 module.exports = app;

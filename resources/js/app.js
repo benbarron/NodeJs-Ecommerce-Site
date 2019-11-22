@@ -142,3 +142,95 @@ document.addEventListener('DOMContentLoaded', e => {
     clearQuery();
   }
 });
+
+if (document.querySelector('#options-area')) {
+  const optionsAreaEL = document.querySelector('#options-area');
+
+  var i = 0;
+  // var optionsArr = [];
+
+  document.querySelector('#add-option-btn').addEventListener('click', e => {
+    e.preventDefault();
+
+    var tempEL = document.createElement('div');
+    tempEL.className = `row row-${i}`;
+
+    var out = `
+          <div class="col-sm-12">
+            <div class="mb-2 row">
+              <div class="col-sm-5">
+                ${
+                  i == 0
+                    ? `<label for='option-${i}-method'>Option Display Method</label>`
+                    : ''
+                }
+                <select name="option-${i}" id="option-${i}" class="form-control form-control-sm" aria-label="Small">
+                  <option value="dropdown" class="form-control  form-control-sm">Dropdown</option>
+                  <option value="radio-buttons"  class="form-control form-control-sm">Radio Buttons</option>
+                </select>
+              </div>
+            <div class="col-sm-5">
+            ${
+              i == 0
+                ? `<label for='option-${i}-options'>Option Values</label>`
+                : ''
+            }
+              <input type="text" class="form-control form-control-sm" aria-label="Small" id="option-${i}" name="option-${i}-value" placeholder="Values (Enter in comma separated list)">
+            </div>
+
+          </div>
+          <hr>
+        </div>
+    `;
+
+    tempEL.innerHTML = out;
+
+    optionsAreaEL.appendChild(tempEL);
+
+    out = '';
+    i += 1;
+  });
+
+  document.querySelector('#remove-option-btn').addEventListener('click', e => {
+    e.preventDefault();
+
+    document.querySelector(`.row-${i - 1}`).remove();
+
+    i -= 1;
+  });
+}
+
+if (document.querySelector('#product-images')) {
+  var k = 0;
+  document.querySelector('input#file-1').addEventListener('change', e => {
+    e.preventDefault();
+
+    let formData = new FormData();
+
+    formData.append('image', e.target.files[0]);
+
+    const headers = {
+      'Content-Type': 'multipart/form-data'
+    };
+
+    axios
+      .post('/api/accept-images', formData, headers)
+      .then(res => {
+        var inputEL = document.createElement('input');
+        inputEL.name = 'file-' + k;
+        inputEL.value = res.data.path;
+        inputEL.type = 'hidden';
+        document.querySelector('#image-inputs').appendChild(inputEL);
+
+        var imageEL = document.createElement('img');
+        imageEL.src = res.data.path;
+        imageEL.className = 'col-sm-2 my-3';
+        document.querySelector('#image-uploads').appendChild(imageEL);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+
+    k += 1;
+  });
+}

@@ -1,7 +1,5 @@
 const route = require('express').Router();
 
-const { isAdmin } = middleware;
-
 const tempPayload = {
   hero: true,
   contentHeader: {
@@ -79,10 +77,13 @@ route.get('/product', (req, res) => {
   res.render('Product');
 });
 
-route.get('/admin', isAdmin, (req, res) => {
-  res.render('admin/Home');
-});
-
 route.get('/logout', AuthController.logout);
+
+/*
+ *
+ *
+ *
+ *
+ */
 
 module.exports = route;

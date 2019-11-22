@@ -3,7 +3,7 @@ class ProductController {
    * show form to add product
    */
   add(req, res) {
-    //
+    return res.render('admin/AddProduct');
   }
 
   /*

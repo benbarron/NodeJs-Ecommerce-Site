@@ -1,36 +1,36 @@
 const mongoose = require('mongoose');
 
 const postSchema = new mongoose.Schema({
-  productName: {
+  name: {
     type: String,
     required: true
   },
-  productPrice: {
+  price: {
     type: Number,
     required: true
   },
-  productDescription: {
+  description: {
     type: String,
     required: true
   },
-  productRating: {
+  details: {
+    type: String,
+    required: true
+  },
+  options: {
+    type: Array,
+    required: false
+  },
+  rating: {
     type: Number,
     required: false,
     default: null
   },
-  productMainImage: {
-    type: String,
-    required: true
-  },
-  productImages: {
+  images: {
     type: Array,
     required: false
   },
-  productOwner: {
-    type: String,
-    required: true
-  },
-  productReviews: {
+  reviews: {
     type: Array,
     required: false,
     default: []
