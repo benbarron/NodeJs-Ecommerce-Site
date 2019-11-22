@@ -34,7 +34,11 @@ const postSchema = new mongoose.Schema({
     type: Array,
     required: false,
     default: []
+  },
+  live: {
+    type: Boolean,
+    required: true
   }
 });
 
-module.exports = Post = mongoose.model('posts', postSchema);
+module.exports = Post = mongoose.model('products', postSchema);

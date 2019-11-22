@@ -2180,15 +2180,14 @@ document.addEventListener('DOMContentLoaded', function (e) {
 
 if (document.querySelector('#options-area')) {
   var optionsAreaEL = document.querySelector('#options-area');
-  var i = 0; // var optionsArr = [];
-
+  var i = 0;
   document.querySelector('#add-option-btn').addEventListener('click', function (e) {
     e.preventDefault();
-    var tempEL = document.createElement('div');
-    tempEL.className = "row row-".concat(i);
-    var out = "\n          <div class=\"col-sm-12\">\n            <div class=\"mb-2 row\">\n              <div class=\"col-sm-5\">\n                ".concat(i == 0 ? "<label for='option-".concat(i, "-method'>Option Display Method</label>") : '', "\n                <select name=\"option-").concat(i, "\" id=\"option-").concat(i, "\" class=\"form-control form-control-sm\" aria-label=\"Small\">\n                  <option value=\"dropdown\" class=\"form-control  form-control-sm\">Dropdown</option>\n                  <option value=\"radio-buttons\"  class=\"form-control form-control-sm\">Radio Buttons</option>\n                </select>\n              </div>\n            <div class=\"col-sm-5\">\n            ").concat(i == 0 ? "<label for='option-".concat(i, "-options'>Option Values</label>") : '', "\n              <input type=\"text\" class=\"form-control form-control-sm\" aria-label=\"Small\" id=\"option-").concat(i, "\" name=\"option-").concat(i, "-value\" placeholder=\"Values (Enter in comma separated list)\">\n            </div>\n\n          </div>\n          <hr>\n        </div>\n    ");
-    tempEL.innerHTML = out;
-    optionsAreaEL.appendChild(tempEL);
+    var el = document.createElement('div');
+    el.className = "row row-".concat(i);
+    var out = "\n          <div class=\"col-sm-12\">\n            <div class=\"mb-2 row\">\n              <div class=\"col-sm-2\">\n                ".concat(i == 0 ? "<label for='option-".concat(i, "-name'>Option Name</label>") : '', "\n                <input type=\"text\" class=\"form-control form-control-sm\" aria-label=\"Small\" id=\"option-").concat(i, "-name\" name=\"option-").concat(i, "-name\" placeholder=\"Option Name\">\n\n              </div>\n              <div class=\"col-sm-5\">\n                ").concat(i == 0 ? "<label for='option-".concat(i, "-method'>Option Display Method</label>") : '', "\n                <select name=\"option-").concat(i, "-method\" id=\"option-").concat(i, "-method\" class=\"form-control form-control-sm\" aria-label=\"Small\">\n                  <option value=\"dropdown\" class=\"form-control  form-control-sm\">Dropdown</option>\n                  <option value=\"radio-buttons\"  class=\"form-control form-control-sm\">Radio Buttons</option>\n                </select>\n              </div>\n            <div class=\"col-sm-5\">\n              ").concat(i == 0 ? "<label for='option-".concat(i, "-values'>Option Values</label>") : '', "\n              <input type=\"text\" class=\"form-control form-control-sm\" aria-label=\"Small\" id=\"option-").concat(i, "-values\" name=\"option-").concat(i, "-values\" placeholder=\"Values (Enter in comma separated list)\">\n            </div>\n\n          </div>\n          <hr>\n        </div>\n    ");
+    el.innerHTML = out;
+    optionsAreaEL.appendChild(el);
     out = '';
     i += 1;
   });
@@ -2217,6 +2216,9 @@ if (document.querySelector('#product-images')) {
       var imageEL = document.createElement('img');
       imageEL.src = res.data.path;
       imageEL.className = 'col-sm-2 my-3';
+      var removeIcon = document.createElement('i');
+      removeIcon.className = 'fas fa-minus';
+      imageEL.appendChild(removeIcon);
       document.querySelector('#image-uploads').appendChild(imageEL);
     })["catch"](function (err) {
       console.log(err);

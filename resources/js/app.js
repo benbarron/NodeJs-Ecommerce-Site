@@ -147,35 +147,43 @@ if (document.querySelector('#options-area')) {
   const optionsAreaEL = document.querySelector('#options-area');
 
   var i = 0;
-  // var optionsArr = [];
 
   document.querySelector('#add-option-btn').addEventListener('click', e => {
     e.preventDefault();
 
-    var tempEL = document.createElement('div');
-    tempEL.className = `row row-${i}`;
+    var el = document.createElement('div');
+    el.className = `row row-${i}`;
 
     var out = `
           <div class="col-sm-12">
             <div class="mb-2 row">
+              <div class="col-sm-2">
+                ${
+                  i == 0
+                    ? `<label for='option-${i}-name'>Option Name</label>`
+                    : ''
+                }
+                <input type="text" class="form-control form-control-sm" aria-label="Small" id="option-${i}-name" name="option-${i}-name" placeholder="Option Name">
+
+              </div>
               <div class="col-sm-5">
                 ${
                   i == 0
                     ? `<label for='option-${i}-method'>Option Display Method</label>`
                     : ''
                 }
-                <select name="option-${i}" id="option-${i}" class="form-control form-control-sm" aria-label="Small">
+                <select name="option-${i}-method" id="option-${i}-method" class="form-control form-control-sm" aria-label="Small">
                   <option value="dropdown" class="form-control  form-control-sm">Dropdown</option>
                   <option value="radio-buttons"  class="form-control form-control-sm">Radio Buttons</option>
                 </select>
               </div>
             <div class="col-sm-5">
-            ${
-              i == 0
-                ? `<label for='option-${i}-options'>Option Values</label>`
-                : ''
-            }
-              <input type="text" class="form-control form-control-sm" aria-label="Small" id="option-${i}" name="option-${i}-value" placeholder="Values (Enter in comma separated list)">
+              ${
+                i == 0
+                  ? `<label for='option-${i}-values'>Option Values</label>`
+                  : ''
+              }
+              <input type="text" class="form-control form-control-sm" aria-label="Small" id="option-${i}-values" name="option-${i}-values" placeholder="Values (Enter in comma separated list)">
             </div>
 
           </div>
@@ -183,9 +191,9 @@ if (document.querySelector('#options-area')) {
         </div>
     `;
 
-    tempEL.innerHTML = out;
+    el.innerHTML = out;
 
-    optionsAreaEL.appendChild(tempEL);
+    optionsAreaEL.appendChild(el);
 
     out = '';
     i += 1;
@@ -225,6 +233,11 @@ if (document.querySelector('#product-images')) {
         var imageEL = document.createElement('img');
         imageEL.src = res.data.path;
         imageEL.className = 'col-sm-2 my-3';
+
+        var removeIcon = document.createElement('i');
+        removeIcon.className = 'fas fa-minus';
+        imageEL.appendChild(removeIcon);
+
         document.querySelector('#image-uploads').appendChild(imageEL);
       })
       .catch(err => {
