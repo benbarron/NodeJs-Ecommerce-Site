@@ -8,15 +8,17 @@ const MongoStore = require('connect-mongo')(session);
 
 const app = express();
 
-// app.use((req, res, next) => {
-//   try {
-//     info(new Date() + ' - ' + req.path);
-//   } catch (e) {
-//     // =========
-//   }
+app.use((req, res, next) => {
+  req.startTime = new Date().getTime();
 
-//   next();
-// });
+  res.on('finish', () =>
+    info(
+      `Time:\t${new Date().getTime() - req.startTime} ms\tPath:\t${req.path}`
+    )
+  );
+
+  next();
+});
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

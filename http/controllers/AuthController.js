@@ -6,7 +6,7 @@ class AuthController {
   async login(req, res) {
     const { userfield, password } = req.body;
 
-    const user = await User.findOne({
+    let user = await User.findOne({
       $or: [{ email: userfield }, { username: userfield }]
     });
 
@@ -22,14 +22,16 @@ class AuthController {
       return res.status(401).json({ error_msg: 'Invalid credentials' });
     }
 
-    req.login(user, (err, user, info) => {
+    req.login(user, err => {
       if (err) {
         return res.status(401).json({
           error_msg: 'There was an error logging you in'
         });
       }
 
-      return res.status(200).json({ success_msg: 'success' });
+      return res
+        .status(200)
+        .json({ success_msg: 'success', userIsAdmin: user.isAdmin });
     });
   }
 

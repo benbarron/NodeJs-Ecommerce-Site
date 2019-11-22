@@ -14,17 +14,19 @@ if (document.querySelector('#login-form')) {
     axios
       .post('/api/login', { userfield: username, password })
       .then(res => {
-        window.location.href =
-          window.location.href.split('?')[0] + '?success_msg=Login Successful';
-        // console.log('success');
+        if (res.data.userIsAdmin) {
+          window.location.href = '/admin';
+        } else {
+          window.location.href =
+            window.location.href.split('?')[0] +
+            '?success_msg=Login Successful';
+        }
       })
       .catch(err => {
         if (err.response.data.error_msg) {
           return toastr.error(err.response.data.error_msg);
         }
       });
-
-    console.log(username, password);
   });
 }
 
