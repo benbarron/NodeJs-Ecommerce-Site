@@ -2058,59 +2058,102 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
-document.querySelector('#login-form').addEventListener('submit', function (e) {
-  e.preventDefault();
-  var username = document.querySelector('#login-username').value;
-  var password = document.querySelector('#login-password').value;
 
-  if (!username || !password) {
-    return toastr.error('Please enter all fields');
-  }
+if (document.querySelector('#login-form')) {
+  document.querySelector('#login-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var username = document.querySelector('#login-username').value;
+    var password = document.querySelector('#login-password').value;
 
-  console.log(username, password);
-});
-document.querySelector('#register-form').addEventListener('submit', function (e) {
-  e.preventDefault();
-  var firstname = document.querySelector('#register-firstname').value;
-  var lastname = document.querySelector('#register-lastname').value;
-  var email = document.querySelector('#register-email').value;
-  var username = document.querySelector('#register-username').value;
-  var password1 = document.querySelector('#register-password1').value;
-  var password2 = document.querySelector('#register-password2').value;
-
-  if (!firstname || !lastname || !email || !username || !password1 || !password2) {
-    return toastr.error('Please enter all fields');
-  }
-
-  if (password1 !== password2) {
-    return toastr.error('Passwords do not match');
-  }
-
-  if (password1.length < 6) {
-    return toastr.error('Your password is too short');
-  }
-
-  axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/register', {
-    firstname: firstname,
-    lastname: lastname,
-    email: email,
-    username: username,
-    password: password1
-  }).then(function (res) {
-    console.log(res);
-  })["catch"](function (err) {
-    if (err.response.data.error_msg) {
-      toastr.error(err.response.data.error_msg);
+    if (!username || !password) {
+      return toastr.error('Please enter all fields');
     }
+
+    axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/login', {
+      userfield: username,
+      password: password
+    }).then(function (res) {
+      window.location.href = window.location.href.split('?')[0] + '?success_msg=Login Successful'; // console.log('success');
+    })["catch"](function (err) {
+      if (err.response.data.error_msg) {
+        return toastr.error(err.response.data.error_msg);
+      }
+    });
+    console.log(username, password);
   });
-  console.log({
-    firstname: firstname,
-    lastname: lastname,
-    email: email,
-    username: username,
-    password1: password1,
-    password2: password2
+}
+
+if (document.querySelector('#register-form')) {
+  document.querySelector('#register-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var firstnameEL = document.querySelector('#register-firstname');
+    var lastnameEL = document.querySelector('#register-lastname');
+    var emailEL = document.querySelector('#register-email');
+    var usernameEL = document.querySelector('#register-username');
+    var password1EL = document.querySelector('#register-password1');
+    var password2EL = document.querySelector('#register-password2');
+    var firstname = firstnameEL.value;
+    var lastname = lastnameEL.value;
+    var email = emailEL.value;
+    var username = usernameEL.value;
+    var password1 = password1EL.value;
+    var password2 = password2EL.value;
+
+    if (!firstname || !lastname || !email || !username || !password1 || !password2) {
+      return toastr.error('Please enter all fields');
+    }
+
+    if (password1 !== password2) {
+      return toastr.error('Passwords do not match');
+    }
+
+    if (password1.length < 6) {
+      return toastr.error('Your password is too short');
+    }
+
+    axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/register', {
+      firstname: firstname,
+      lastname: lastname,
+      email: email,
+      username: username,
+      password: password1
+    }).then(function (res) {
+      firstnameEL.value = '';
+      lastnameEL.value = '';
+      emailEL.value = '';
+      usernameEL.value = '';
+      password1EL.value = '';
+      password2EL.value = '';
+      toastr.success(res.data.success_msg);
+    })["catch"](function (err) {
+      if (err.response.data.error_msg) {
+        toastr.error(err.response.data.error_msg);
+      }
+    }); // console.log({ firstname, lastname, email, username, password1, password2 });
   });
+}
+
+document.addEventListener('DOMContentLoaded', function (e) {
+  var urlParams = new URLSearchParams(window.location.search);
+
+  var clearQuery = function clearQuery() {
+    if (history.pushState) {
+      var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
+      window.history.pushState({
+        path: newurl
+      }, '', newurl);
+    }
+  };
+
+  if (urlParams.has('success_msg')) {
+    toastr.success(urlParams.get('success_msg'));
+    clearQuery();
+  }
+
+  if (urlParams.has('error_msg')) {
+    toastr.error(urlParams.get('error_msg'));
+    clearQuery();
+  }
 });
 
 /***/ }),
@@ -2133,8 +2176,8 @@ document.querySelector('#register-form').addEventListener('submit', function (e)
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/benbarron/Desktop/Projects/node/ShoppingCart/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Users/benbarron/Desktop/Projects/node/ShoppingCart/resources/sass/main.scss */"./resources/sass/main.scss");
+__webpack_require__(/*! /home/ben/Desktop/node/node-commerce/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/ben/Desktop/node/node-commerce/resources/sass/main.scss */"./resources/sass/main.scss");
 
 
 /***/ })

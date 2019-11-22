@@ -4,6 +4,7 @@ const session = require('express-session');
 const passport = require('passport');
 const mongoose = require('mongoose');
 const { engine } = require('express-edge');
+const MongoStore = require('connect-mongo')(session);
 
 const app = express();
 
@@ -21,7 +22,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 mongoose
-  .connect(env('mongoUri'), {
+  .connect(env('mongoLinuxUri'), {
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true
@@ -31,39 +32,41 @@ mongoose
 
 app.use(
   session({
+    store: new MongoStore({
+      mongooseConnection: mongoose.connection,
+      ttl: 14 * 24 * 60 * 60
+    }),
     secret: env('sessionSecret'),
     resave: true,
-    saveUninitialized: true
+    saveUninitialized: true,
+    cookie: { maxAge: 540000 }
   })
 );
 
 require('./http/middleware/passport')(passport);
 
-if (env('mode') === 'PRODUCTION') {
-  var options = {
-    override: true,
-    exception_url: false,
-    htmlMinifier: {
-      removeComments: true,
-      collapseWhitespace: true,
-      collapseBooleanAttributes: true,
-      removeAttributeQuotes: true,
-      removeEmptyAttributes: true,
-      minifyJS: true
-    }
-  };
-
-  app.use(minifyHTML(options));
-}
+app.use(engine);
+app.set('views', path.resolve(__dirname, 'resources/views'));
 
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(engine);
-app.set('views', path.resolve(__dirname, 'resources/views'));
-
 app.use('/assets', express.static('./public/assets'));
 app.use('/storage', express.static('./public/storage'));
+
+app.use((req, res, next) => {
+  if (!req.session.cart) {
+    const { Cart } = interfaces;
+
+    req.session.cart = new Cart();
+  }
+
+  res.locals.path = req.path;
+  res.locals.user = req.user;
+  res.locals.cart = req.session.cart;
+
+  next();
+});
 
 app.use('/api', require('./routes/api'));
 app.use(require('./routes/web'));

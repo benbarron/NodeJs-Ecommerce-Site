@@ -5,6 +5,10 @@
   }
 }
 
+body {
+  overflow-x: hidden;
+}
+
 .container-large {
   display: flex;
   max-width: 1250px !important;
@@ -17,7 +21,7 @@
 
   background: url('/assets/img/bg1.jpeg');
   background-size: cover;
-  background-position: center;
+  background-position: center left;
 
   .home-hero-overlay {
     width: 100%;

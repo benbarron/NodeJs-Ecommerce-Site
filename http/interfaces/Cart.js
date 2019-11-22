@@ -3,10 +3,10 @@ const colors = require('colors');
 
 class Cart {
   /* Cart Attributes -------------
-   * items - array of product objects
-   * subTotal - float
-   * tax - float
-   * total - float
+   * items      -   array of product objects
+   * subTotal   -   float
+   * tax        -   float
+   * total      -   float
    * --------------------------- */
   constructor() {
     this.taxRate = 0.09;
@@ -138,66 +138,58 @@ class Cart {
   }
 }
 
-const products = [
-  {
-    id: 1,
-    name: 'Product 1',
-    images: ['/storage/product-images/macbook.png'],
-    price: 1399.99
-  },
-  {
-    id: 2,
-    name: 'Product 2',
-    images: ['/storage/product-images/macbook.png'],
-    price: 1499.99
-  },
-  {
-    id: 3,
-    name: 'Product 3',
-    images: ['/storage/product-images/macbook.png'],
-    price: 1399.99
-  },
-  {
-    id: 4,
-    name: 'Product 4',
-    images: ['/storage/product-images/macbook.png'],
-    price: 1499.99
-  },
-  {
-    id: 5,
-    name: 'Product 5',
-    images: ['/storage/product-images/macbook.png'],
-    price: 1399.99
-  },
-  {
-    id: 6,
-    name: 'Product 6',
-    images: ['/storage/product-images/macbook.png'],
-    price: 1499.99
-  }
-];
+// const products = [
+//   {
+//     id: 1,
+//     name: 'Product 1',
+//     images: ['/storage/product-images/macbook.png'],
+//     price: 1399.99
+//   },
+//   {
+//     id: 2,
+//     name: 'Product 2',
+//     images: ['/storage/product-images/macbook.png'],
+//     price: 1499.99
+//   },
+//   {
+//     id: 3,
+//     name: 'Product 3',
+//     images: ['/storage/product-images/macbook.png'],
+//     price: 1399.99
+//   },
+//   {
+//     id: 4,
+//     name: 'Product 4',
+//     images: ['/storage/product-images/macbook.png'],
+//     price: 1499.99
+//   },
+//   {
+//     id: 5,
+//     name: 'Product 5',
+//     images: ['/storage/product-images/macbook.png'],
+//     price: 1399.99
+//   },
+//   {
+//     id: 6,
+//     name: 'Product 6',
+//     images: ['/storage/product-images/macbook.png'],
+//     price: 1499.99
+//   }
+// ];
 
-const cart = new Cart();
+// const cart = new Cart();
 
-var i1 = cart.addItem(products[1], 2, { ram: '16gb', size: '15in' });
-var i2 = cart.addItem(products[0], 1);
-var i3 = cart.addItem(products[1], 1, { ram: '16gb', size: '13in' });
+// var i1 = cart.addItem(products[1], 2, { ram: '16gb', size: '15in' });
+// var i2 = cart.addItem(products[1], 2, { ram: '16gb', size: '17in' });
+// // var i2 = cart.addItem(products[0], 1);
+// // var i3 = cart.addItem(products[1], 1, { ram: '16gb', size: '13in' });
 
-cart.removeItem(i2);
-cart.updateQuantity(i1, 3);
+// // cart.removeItem(i2);
+// // cart.updateQuantity(i1, 3);
 
-// cart.emptyCart();
+// // cart.emptyCart();
 
-cart.printCartNumbers();
+// cart.printCartNumbers();
+// cart.printCartItems();
 
 module.exports = Cart;
-
-db.createUser({
-  user: 'benjaminbarron',
-  pwd: passwordPrompt(),
-  roles: [
-    { role: 'clusterAdmin', db: 'admin' },
-    { role: 'readAnyDatabase', db: 'admin' },
-    'readWrite'
-  ]
-});

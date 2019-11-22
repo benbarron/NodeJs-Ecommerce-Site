@@ -10,9 +10,9 @@ const app = require('./app');
 
 if (env('mode') === 'PRODUCTION') {
   if (cluster.isMaster) {
-    var cpuCount = os.cpus().length;
+    var cpus = os.cpus();
 
-    for (let i = 0; i < cpuCount; i++) {
+    for (let i = 0; i < cpus.length; i++) {
       cluster.fork();
     }
 

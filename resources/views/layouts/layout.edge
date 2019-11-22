@@ -14,18 +14,18 @@
   </head>
   <body class="hold-transition layout-top-nav">
     <div class="wrapper">
-      @include('partials/mainNav')
+      @include('partials/MainNav')
 
       <div class="content-wrapper">
-        @include('partials/registerModal')
-        @include('partials/loginModal')
+        @include('partials/RegisterModal')
+        @include('partials/LoginModal')
 
         @if(hero) 
-          @include('partials/homeHero')
+          @include('partials/HomeHero')
         @endif
         
         @if(contentHeader)
-          @include('partials/contentHeader')
+          @include('partials/ContentHeader')
         @endif
 
         @!section('content')
@@ -33,10 +33,10 @@
 
       <aside class="control-sidebar control-sidebar-dark">
         <div class="p-3">
-          @include('partials/sidebar')
+          @include('partials/Sidebar')
         </div>
       </aside>
-      @include('partials/footer')
+      @include('partials/Footer')
     </div>
 
     <script src="/assets/vendor/jquery/jquery.min.js"></script>

@@ -19,6 +19,7 @@
     "bcryptjs": "^2.4.3",
     "cluster": "^0.7.7",
     "colors": "^1.4.0",
+    "connect-mongo": "^3.1.2",
     "express": "^4.17.1",
     "express-edge": "^2.0.1",
     "express-session": "^1.17.0",

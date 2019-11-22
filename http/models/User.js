@@ -18,8 +18,8 @@ const userSchema = new mongoose.Schema({
     type: Number,
     required: false
   },
-  userType: {
-    type: String, // 'admin' 1 || 'buyer' 0
+  isAdmin: {
+    type: Boolean, // 'admin' 1 || 'buyer' 0
     required: true
   },
   username: {

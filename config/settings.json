@@ -6,10 +6,11 @@
   "port": 5000,
 
   "mongoUri": "mongodb://benjaminbarron:Lift4life!@localhost:27017/test",
+  "mongoLinuxUri": "mongodb://ben:Lift4life!@localhost:27017/tasks",
 
-  "jwtSecret": "##",
+  "jwtSecret": "qyvnz6z1K6-9372Wu1mTz-T4USCthjNl-ZLaqeeuKqf-hBV7PdE2wg",
   "jwtLifetime": 1209600,
 
-  "sessionSecret": "##",
+  "sessionSecret": "NHiAXMrdDN-qiCgKHZgDt-wyYzHSzlhZ-pHIv1eDB5M-jKFVfqgNoh",
   "sessionLifetime": 12096000
 }
