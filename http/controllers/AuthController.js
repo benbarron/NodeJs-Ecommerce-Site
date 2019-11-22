@@ -3,6 +3,11 @@ const bcrypt = require('bcryptjs');
 const { User } = model;
 
 class AuthController {
+  /*
+   * Login
+   * @params {email | username, password}
+   *
+   */
   async login(req, res) {
     const { userfield, password } = req.body;
 
@@ -29,20 +34,23 @@ class AuthController {
         });
       }
 
-      return res
-        .status(200)
-        .json({ success_msg: 'success', userIsAdmin: user.isAdmin });
+      return res.status(201).json({ userIsAdmin: user.isAdmin });
     });
   }
 
-  async logout(req, res) {
-    req.logout();
+  // async logout(req, res) {
+  //   req.logout();
 
-    return res.render('Login', {
-      success_msg: 'You have been logged out'
-    });
-  }
+  //   return res.render('Login', {
+  //     success_msg: 'You have been logged out'
+  //   });
+  // }
 
+  /*
+   * Register
+   * @params {firstname, lastname, email, username, password}
+   *
+   */
   async register(req, res) {
     const { firstname, lastname, email, username, password } = req.body;
 
@@ -67,8 +75,6 @@ class AuthController {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // console.log({ firstname, lastname, email, username, hashedPassword });
-
     const user = new User({
       firstname,
       lastname,
@@ -85,6 +91,11 @@ class AuthController {
     });
   }
 
+  /*
+   * Logout
+   * @params {redirect_to}
+   *
+   */
   async logout(req, res) {
     req.logout();
 

@@ -110,6 +110,24 @@ document.addEventListener('DOMContentLoaded', e => {
     }
   };
 
+  toastr.options = {
+    closeButton: false,
+    debug: false,
+    newestOnTop: false,
+    progressBar: false,
+    positionClass: 'toast-top-right',
+    preventDuplicates: false,
+    onclick: null,
+    showDuration: '300',
+    hideDuration: '1000',
+    timeOut: '5000',
+    extendedTimeOut: '1000',
+    showEasing: 'swing',
+    hideEasing: 'linear',
+    showMethod: 'fadeIn',
+    hideMethod: 'fadeOut'
+  };
+
   if (urlParams.has('success_msg')) {
     toastr.success(urlParams.get('success_msg'));
 
@@ -117,6 +135,8 @@ document.addEventListener('DOMContentLoaded', e => {
   }
 
   if (urlParams.has('error_msg')) {
+    toastr.options.closeHtml = '<button><i class="icon-off"></i></button>';
+
     toastr.error(urlParams.get('error_msg'));
 
     clearQuery();
