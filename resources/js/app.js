@@ -15,7 +15,7 @@ if (document.querySelector('#login-form')) {
       .post('/api/login', { userfield: username, password })
       .then(res => {
         if (res.data.userIsAdmin) {
-          window.location.href = '/admin';
+          window.location.href = '/admin?success_msg=Login Successful';
         } else {
           window.location.href =
             window.location.href.split('?')[0] +
