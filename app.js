@@ -15,14 +15,14 @@ const app = express();
 app.use(device.capture());
 
 app.use(express.json());
-app.use(fileUpload());
 app.use(express.urlencoded({ extended: true }));
+app.use(fileUpload());
 
 app.use('/assets', express.static('./public/assets'));
 app.use('/storage', express.static('./public/storage'));
 
 mongoose
-  .connect(env('mongoLinuxUri'), {
+  .connect(env('mongoUri'), {
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true
@@ -65,28 +65,28 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use((req, res, next) => {
-  req.startTime = new Date().getTime();
+// app.use((req, res, next) => {
+//   req.startTime = new Date().getTime();
 
-  res.on('finish', async () => {
-    const { Traffic } = model;
+//   res.on('finish', async () => {
+//     const { Traffic } = model;
 
-    const traffic = new Traffic();
+//     const traffic = new Traffic();
 
-    var id = req.user ? req.user._id : '';
+//     var id = req.user ? req.user._id : '';
 
-    traffic.ip = req.connection.remoteAddress || 'no ip available';
-    traffic.deviceType = req.device.type;
-    traffic.deviceModel = '';
-    traffic.path = req.path;
-    traffic.requestTime = new Date().getTime() - req.startTime;
-    traffic.user = id;
+//     traffic.ip = req.connection.remoteAddress || 'no ip available';
+//     traffic.deviceType = req.device.type;
+//     traffic.deviceModel = '';
+//     traffic.path = req.path;
+//     traffic.requestTime = new Date().getTime() - req.startTime;
+//     traffic.user = id;
 
-    await traffic.save();
-  });
+//     await traffic.save();
+//   });
 
-  next();
-});
+//   next();
+// });
 
 app.use('/api', require('./routes/api'));
 app.use('/admin', middleware.isAdmin, require('./routes/admin'));

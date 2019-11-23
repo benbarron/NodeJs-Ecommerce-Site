@@ -1,6 +1,20 @@
+const uuid = require('uuid');
+const path = require('path');
+
 const { Product } = model;
 
 class ProductController {
+  /*
+   * shows list of all products
+   */
+  async view(req, res) {
+    const products = await Product.find();
+
+    res.locals.products = products;
+
+    return res.render('admin/ViewProducts');
+  }
+
   /*
    * show form to add product
    */
@@ -12,78 +26,73 @@ class ProductController {
    *  stores a new product instance
    */
   async store(req, res) {
-    const { name, price, live, description, details } = req.body;
+    const { name, price, live, category, description, details } = req.body;
 
-    const img1 = req.body['file-1'];
-    const img2 = req.body['file-2'];
-    const img3 = req.body['file-3'];
-    const img4 = req.body['file-4'];
-    const img5 = req.body['file-5'];
+    const options = JSON.parse(req.body.options);
 
-    var images = [img1, img2, img3, img4, img5].filter(
-      img => typeof img !== 'undefined'
+    if (!name || !price || !live || !category || !description || !details) {
+      return res.status(400).json({ error_msg: 'Please enter all fields' });
+    }
+
+    if (!req.files) {
+      return res
+        .status(400)
+        .json({ error_msg: 'At Lease 3 Product Images Are Required' });
+    }
+
+    const image1 = req.files['images-1'];
+    const image2 = req.files['images-2'];
+    const image3 = req.files['images-3'];
+    const image4 = req.files['images-4'];
+    const image5 = req.files['images-5'];
+
+    const images = [image1, image2, image3, image4, image5].filter(
+      img => typeof img != 'undefined'
     );
 
     if (images.length < 3) {
-      return res.render('admin/AddProduct', {});
+      return res
+        .status(400)
+        .json({ error_msg: 'At Lease 3 Product Images Are Required' });
     }
 
-    if (!name || !price || !description || !details) {
-      return res.render('admin/AddProduct', {});
+    var imagePaths = [];
+
+    for (let i = 0; i < images.length; i++) {
+      var ext = images[i].mimetype.split('/')[1];
+      var storageDirectories = uuid() + uuid() + '.' + ext;
+
+      var pathToStorage = path.resolve(
+        __dirname,
+        '../../public/storage/product-images',
+        storageDirectories
+      );
+
+      images[i].mv(pathToStorage);
+      imagePaths.push('/storage/product-images/' + storageDirectories);
     }
 
-    var options = [];
-    var i = 0;
-
-    while (1) {
-      var obj = {
-        name: req.body['option-' + i + '-name'],
-        display: req.body['option-' + i + '-method'],
-        values: req.body['option-' + i + '-values']
-      };
-
-      if (!obj.name || !obj.display || !obj.values) {
-        break;
-      }
-
-      options.push(obj);
-
-      i++;
-    }
-
-    const product = new Product();
-
-    product.name = name;
-    product.price = price;
-    product.description = description;
-    product.details = details;
-    product.options = options;
-    product.images = images;
-    product.live = live == 'live' ? true : false;
+    const product = new Product({
+      name,
+      price,
+      description,
+      category,
+      details,
+      options,
+      images: imagePaths,
+      live: live == 'live' ? true : false
+    });
 
     await product.save();
 
-    // console.log({
-    //   name,
-    //   price,
-    //   live,
-    //   description,
-    //   details,
-    //   img1,
-    //   img2,
-    //   img3,
-    //   img4,
-    //   img5
-    // });
-
-    return res.redirect('/admin?success_msg=Product Created');
+    return res.json({ success_msg: 'Product Created' });
   }
 
   /*
    *  shows form to edit product
    */
   async edit(req, res) {
-    //
+    return res.render('admin/EditProduct');
   }
 
   /*
@@ -97,7 +106,7 @@ class ProductController {
    *  deletes a product
    */
   async delete(req, res) {
-    //
+    return res.redirect('/admin/products?success_msg=Product Deleted');
   }
 }
 

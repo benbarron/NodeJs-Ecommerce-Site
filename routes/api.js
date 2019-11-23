@@ -5,31 +5,33 @@ const uuid = require('uuid');
 route.post('/register', AuthController.register);
 route.post('/login', AuthController.login);
 
-route.post('/accept-images', (req, res) => {
-  if (!req.files) {
-    return res.status(400).json({ error_msg: 'Please upload a file ' });
-  }
+route.post('/products/add', ProductController.store);
 
-  const { image } = req.files;
+// route.post('/accept-images', (req, res) => {
+//   if (!req.files) {
+//     return res.status(400).json({ error_msg: 'Please upload a file ' });
+//   }
 
-  const ext = image.mimetype.split('/')[1];
+//   const { image } = req.files;
 
-  const storageDirectories = uuid() + uuid() + '.' + ext;
+//   const ext = image.mimetype.split('/')[1];
 
-  const pathToStorage = path.resolve(
-    __dirname,
-    '../public/storage/product-images',
-    storageDirectories
-  );
+//   const storageDirectories = uuid() + uuid() + '.' + ext;
 
-  console.log(pathToStorage);
+//   const pathToStorage = path.resolve(
+//     __dirname,
+//     '../public/storage/product-images',
+//     storageDirectories
+//   );
 
-  image.mv(pathToStorage);
+//   console.log(pathToStorage);
 
-  return res.json({
-    success_msg: 'ok',
-    path: '/storage/product-images/' + storageDirectories
-  });
-});
+//   image.mv(pathToStorage);
+
+//   return res.json({
+//     success_msg: 'ok',
+//     path: '/storage/product-images/' + storageDirectories
+//   });
+// });
 
 module.exports = route;

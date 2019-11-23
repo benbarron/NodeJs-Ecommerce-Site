@@ -4,7 +4,7 @@
   <div class=" p-3">
     <div class="card card-solid">
       <div class="card-body">
-          <form action="/admin/products/store" method="post" enctype="multipart/form-data">
+          <form action="/admin/products/store" method="post" enctype="multipart/form-data" id="add-form">
 
 
         <div class="row">
@@ -14,7 +14,7 @@
                 <h1>Add Product</h1>
               </span>               
               <span>
-                <button type="submit" class="btn btn btn-secondary mt-2">Save Product</button>  
+                <button type="submit" class="btn btn btn-success mt-2">Save Product</button>  
               </span> 
             </div>
             <hr >
@@ -28,7 +28,14 @@
               <div class="form-group row mb-4">
                 <label for="product-price" class="col-sm-2 col-form-label">Product Price</label>
                 <div class="col-sm-10">
-                  <input type="text" name="price" class="form-control" id="product-name" placeholder="Product Price" value="{{ price ? price : ''}}">
+                  <input type="text" name="price" class="form-control" id="product-price" placeholder="Product Price" value="{{ price ? price : ''}}">
+                </div>
+              </div> 
+
+              <div class="form-group row mb-4">
+                <label for="product-category" class="col-sm-2 col-form-label">Product Category</label>
+                <div class="col-sm-10">
+                  <input type="text" name="category" class="form-control" id="product-category" placeholder="Product Category" value="{{ price ? price : ''}}">
                 </div>
               </div> 
 
@@ -52,7 +59,7 @@
               <div class="form-group row mb-4">
                 <label for="tiny-mce-editor" class="col-sm-2 col-form-label">Product Details</label>
                 <div class="col-sm-10">
-                  <textarea name="details" id="tiny-mce-editor" cols="30" rows="10" value="{{ details ? details : null}}" placeholder="Detailed description of the product and it's features. Will be displayed on the individual product page."></textarea>
+                  <textarea name="details" id="product-details" cols="30" rows="10" value="{{ details ? details : null}}" placeholder="Detailed description of the product and it's features. Will be displayed on the individual product page."></textarea>
                 </div>
               </div>
 
@@ -61,11 +68,11 @@
                 <div class="col-sm-10">
                   <div id="options-area"></div>
                   <div class="d-flex">
-                    <button id="add-option-btn" class="btn btn-sm btn-primary mr-3">
+                    <button id="add-option-btn" class="btn btn-sm btn-outline-primary mr-3">
                       <i class="fas fa-plus mr-2"></i>
                       Add Option                    
                     </button>
-                    <button id="remove-option-btn" class="btn btn-sm btn-danger">
+                    <button id="remove-option-btn" class="btn btn-sm btn-outline-danger">
                       <i class="fas fa-minus mr-2"></i>
                       Remove Option
                     </button>
@@ -78,12 +85,20 @@
                   <br><small>(3 Are Required)</small>
                 </label>
                 <div class="col-sm-10" id="product-images">
-                  <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="file-1" name="file-1">
-                    <label class="custom-file-label" for="file-1">Choose file</label>
+                  <div class="row">
+                    <div class="col-sm-9">
+                      <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="file" name="file">
+                        <label class="custom-file-label" for="file">Choose file</label>
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <button class="btn btn btn-outline-danger" id="clear-images-btn">Clear Images</button>
+                    </div>
                   </div>
-                  <div id="image-inputs"></div>
-                  <div id="image-uploads"></div>
+                  <div id="image-previews" class="mt-4">
+                    
+                  </div>
                 </div>
               </div>
               
@@ -97,14 +112,19 @@
   </div>
 @endsection
 
+@section('css')
+
+@endsection
+
 @section('js')
+
 
   <script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
   <script src="https://cloud.tinymce.com/stable/tinymce.min.js?apiKey=3biagnraoc4pao3hafq9ch3uo99inbq0zu4rky8wdpu3fg65"></script>
   
   <script>      
     tinymce.init({
-      selector: '#tiny-mce-editor',
+      selector: '#product-details',
       branding: false,
       theme: 'modern',
       height: 200,
@@ -211,5 +231,3 @@
   </script>
 @endsection
 
-@section('css')
-@endsection

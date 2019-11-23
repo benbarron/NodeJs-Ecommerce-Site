@@ -2193,37 +2193,106 @@ if (document.querySelector('#options-area')) {
   });
   document.querySelector('#remove-option-btn').addEventListener('click', function (e) {
     e.preventDefault();
+
+    if (i === 0) {
+      return;
+    }
+
     document.querySelector(".row-".concat(i - 1)).remove();
     i -= 1;
   });
 }
 
 if (document.querySelector('#product-images')) {
-  var k = 0;
-  document.querySelector('input#file-1').addEventListener('change', function (e) {
+  var images = [];
+  document.querySelector('#clear-images-btn').addEventListener('click', function (e) {
     e.preventDefault();
+    images = [];
+    document.querySelector('#image-previews').innerHTML = '';
+    document.querySelector('#file').value = '';
+  });
+  document.querySelector('input#file').addEventListener('change', function (e) {
+    e.preventDefault();
+    var file = e.target.files[0];
+
+    if (!file) {
+      return;
+    }
+
+    images.push(file);
+    var reader = new FileReader();
+    reader.addEventListener('load', function () {
+      var imageEL = document.createElement('img');
+      imageEL.className = 'image-upload-preview col-sm-2';
+      imageEL.setAttribute('src', reader.result);
+      document.querySelector('#image-previews').appendChild(imageEL);
+    });
+    reader.readAsDataURL(file);
+  });
+  document.querySelector('#add-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var name = document.querySelector('#product-name').value;
+    var price = document.querySelector('#product-price').value;
+    var category = document.querySelector('#product-category').value;
+    var live = document.querySelector('#product-status').value;
+    var details = tinyMCE.activeEditor.getContent();
+    var description = document.querySelector('#product-description').value;
+    var options = [];
+    var i = 0;
+
+    while (1) {
+      try {
+        var obj = {
+          name: document.querySelector('#option-' + i + '-name').value,
+          method: document.querySelector('#option-' + i + '-method').value,
+          values: document.querySelector('#option-' + i + '-values').value
+        };
+      } catch (e) {
+        break;
+      }
+
+      if (!obj.name || !obj.method || !obj.values) {
+        break;
+      }
+
+      options.push(obj);
+      i++;
+    } // console.log({ name, price, category, live, details, description, options, images });
+
+
+    if (!name || !price || !category || !live || !details || !description) {
+      return toastr.error('Please enter all fields');
+    }
+
+    if (images.length < 3) {
+      return toastr.error('Please upload 3 images');
+    }
+
     var formData = new FormData();
-    formData.append('image', e.target.files[0]);
+    formData.append('name', name);
+    formData.append('price', price);
+    formData.append('category', category);
+    formData.append('live', live);
+    formData.append('details', details);
+    formData.append('description', description);
+    formData.append('options', JSON.stringify(options));
+
+    for (var l = 1; l <= images.length; l++) {
+      formData.append('images-' + l, images[l - 1]);
+    }
+
     var headers = {
       'Content-Type': 'multipart/form-data'
     };
-    axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/accept-images', formData, headers).then(function (res) {
-      var inputEL = document.createElement('input');
-      inputEL.name = 'file-' + k;
-      inputEL.value = res.data.path;
-      inputEL.type = 'hidden';
-      document.querySelector('#image-inputs').appendChild(inputEL);
-      var imageEL = document.createElement('img');
-      imageEL.src = res.data.path;
-      imageEL.className = 'col-sm-2 my-3';
-      var removeIcon = document.createElement('i');
-      removeIcon.className = 'fas fa-minus';
-      imageEL.appendChild(removeIcon);
-      document.querySelector('#image-uploads').appendChild(imageEL);
+    axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/products/add', formData, headers).then(function (res) {
+      if (res.data.success_msg) {
+        window.location.href = '/admin/products?success_msg=' + res.data.success_msg;
+      }
     })["catch"](function (err) {
-      console.log(err);
+      if (err.response.data.error_msg) {
+        toastr.error(err.response.data.error_msg);
+      }
     });
-    k += 1;
   });
 }
 
@@ -2247,8 +2316,8 @@ if (document.querySelector('#product-images')) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/ben/Desktop/node/node-commerce/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/ben/Desktop/node/node-commerce/resources/sass/main.scss */"./resources/sass/main.scss");
+__webpack_require__(/*! /Users/benbarron/Desktop/Projects/node/node-commerce/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/benbarron/Desktop/Projects/node/node-commerce/resources/sass/main.scss */"./resources/sass/main.scss");
 
 
 /***/ })
