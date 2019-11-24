@@ -39,9 +39,10 @@
               @endif
               " method="POST">
               
-              <input type="hidden" name="_id" value={{ product._id }}>
-              <input type="hidden" name="price" value={{ product.price }}>
-              <input type="hidden" name="name" value={{ product.name }}>
+              <input type="hidden" name="_id" value="{{ product._id }}">
+              <input type="hidden" name="price" value="{{ product.price }}">
+              <input type="hidden" name="name" value="{{ product.name }}">
+              <input type="hidden" name="image" value="{{ product.images[0] }}">
 
             @if(product.options.length > 0) 
               @each(option in product.options)

@@ -5,6 +5,10 @@
   }
 }
 
+.row {
+  width: 100% !important;
+}
+
 body {
   overflow-x: hidden;
 }
@@ -92,6 +96,11 @@ main#home-products {
     box-shadow: 6px 6px 67px -25px rgba(0, 0, 0, 0.75);
     background: #fff;
     border-radius: 10px;
+
+    img.product-image {
+      height: 200px;
+      width: 100%;
+    }
   }
 
   // .swiper-container {
@@ -122,6 +131,10 @@ main#home-products {
   //   }
   // }
   // }
+}
+
+.total-side-panel {
+  padding: 10px;
 }
 
 .control-sidebar {
@@ -182,4 +195,8 @@ main#home-products {
       }
     }
   }
+}
+
+.btn-full-width {
+  width: 100% !important;
 }

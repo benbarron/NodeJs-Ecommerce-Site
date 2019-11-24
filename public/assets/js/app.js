@@ -2176,6 +2176,12 @@ document.addEventListener('DOMContentLoaded', function (e) {
     toastr.error(urlParams.get('error_msg'));
     clearQuery();
   }
+
+  if (urlParams.has('warning_msg')) {
+    toastr.options.closeHtml = '<button><i class="icon-off"></i></button>';
+    toastr.warning(urlParams.get('warning_msg'));
+    clearQuery();
+  }
 });
 
 /***/ }),

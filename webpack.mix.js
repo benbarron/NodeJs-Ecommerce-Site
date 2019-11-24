@@ -5,4 +5,5 @@ mix
   .js('./resources/js/app.js', './public/assets/js')
   .js('./resources/js/addProduct.js', './public/assets/js')
   .js('./resources/js/editProduct.js', './public/assets/js')
-  .js('./resources/js/tinyMceInit.js', './public/assets/js');
+  .js('./resources/js/tinyMceInit.js', './public/assets/js')
+  .js('./resources/js/shoppingCart.js', './public/assets/js');

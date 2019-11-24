@@ -1,11 +1,28 @@
-<div class="col-sm-12 col-md-6 col-lg-4 col-md-3">
+<div class="col-sm-12 col-md-6 col-lg-3">
   <div class="product-widget">
-    <h5 class="product-name"> {{ product.name }}</h5>
     <img class="product-image" src="{{ product.images[0] }}" alt="{{ product.name }}">
-    <div class="row p-2 px-4 d-flex justify-content-between">
-      <span><h6>$ {{ product.price }}</h6></span>
+    <div class="row ">
+      <h4>{{ product.name }}</h4>
+    </div>
+    <div class="row">
+        <h6>$ {{ product.price }}</h6>
       
-      <span><a href="/products/{{ product._id }}" class="btn btn-primary btn-sm">View Product</a></span>
+        
+    </div>
+    <div class="row d-flex justify-content-between">
+      <a href="/products/{{ product._id }}" class="btn btn-primary btn-sm">View Product</a>
+      @if(product.options.length > 0)
+        <a href="/products/{{ product._id }}?warning_msg=Please select product options" class="btn btn-secondary btn-sm">Add To Cart</a>
+      @else 
+        <form action="/cart/add" method="POST">
+          <input type="hidden" name="name" value="{{ product.name }}">
+          <input type="hidden" name="_id" value="{{ product._id }}">
+          <input type="hidden" name="price" value="{{ product.price }}">
+          <input type="hidden" name="image" value={{ product.images[0] }}>
+          <input type="hidden" name="quantity" value="1">
+          <button class="btn btn-secondary btn-sm">Add To Cart</button>
+        </form>
+      @endif
     </div>
   </div>
 </div>

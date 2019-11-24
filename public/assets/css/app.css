@@ -3,6 +3,10 @@
   outline: none;
 }
 
+.row {
+  width: 100% !important;
+}
+
 body {
   overflow-x: hidden;
 }
@@ -96,6 +100,15 @@ main#home-products .product-widget {
   border-radius: 10px;
 }
 
+main#home-products .product-widget img.product-image {
+  height: 200px;
+  width: 100%;
+}
+
+.total-side-panel {
+  padding: 10px;
+}
+
 .control-sidebar {
   width: 350px !important;
   -webkit-transition: 0.3s ease !important;
@@ -158,5 +171,9 @@ main#home-products .product-widget {
 .shopping-cart-list .shopping-cart-item .remove-item-form button.remove-item-btn i {
   font-size: 14px;
   color: #fff;
+}
+
+.btn-full-width {
+  width: 100% !important;
 }
 

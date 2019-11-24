@@ -2,7 +2,7 @@ const route = require('express').Router();
 
 const { apiAdmin, isAdmin } = middleware;
 
-route.get('/', (req, res) => {
+route.get('/', isAdmin, (req, res) => {
   res.render('admin/Home');
 });
 

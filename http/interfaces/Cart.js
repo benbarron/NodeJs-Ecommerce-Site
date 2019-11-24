@@ -64,8 +64,6 @@ class Cart {
     }
 
     this.updatePricesAndQuantity();
-
-    return cartIndexId;
   }
 
   updateQuantity(id, newQuantity) {

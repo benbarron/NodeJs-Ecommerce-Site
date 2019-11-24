@@ -2,50 +2,54 @@ const url = require('url');
 
 class CartController {
   async add(req, res) {
-    const { _id, name } = req.body;
+    const { _id, name, image } = req.body;
     var price = Number(req.body.price);
     var quantity = Number(req.body.quantity);
 
-    var optionsArr = req.query.options.split(',');
     var options = {};
 
-    for (let i = 0; i < optionsArr.length; i++) {
-      var option = optionsArr[i].trim();
+    if (req.query.options) {
+      try {
+        var optionsArr = req.query.options.split(',');
 
-      if (option != '') {
-        options[option] = req.body[option];
+        for (let i = 0; i < optionsArr.length; i++) {
+          var option = optionsArr[i].trim();
+
+          if (option != '') {
+            options[option] = req.body[option];
+          }
+        }
+      } catch (e) {
+        //
       }
     }
 
-    var id = req.session.cart.addItem({ _id, price, name }, quantity, options);
+    console.log(name);
+
+    req.session.cart.addItem({ _id, price, name, image }, quantity, options);
 
     req.session.cart.printCartNumbers();
 
-    return res.redirect(
-      url.format({
-        pathname: '/cart',
-        query: {
-          success_msg: 'Product added to cart',
-          ...req.body
-        }
-      })
-    );
+    return res.redirect('/cart?success_msg=Product added to cart');
   }
 
-  async view(req, res) {
-    const { cart } = req.session;
+  async removeOne(req, res) {
+    const { cartIndexId } = req.params;
 
-    var subTotal = cart.getSubTotal().toFixed(2);
-    var tax = cart.getTax().toFixed(2);
-    var total = cart.getTotal().toFixed(2);
-    var items = cart.getItems();
+    if (!cartIndexId) {
+      return res.redirect(
+        '/cart?warning_msg=There was an error removing that item'
+      );
+    }
 
-    console.log(items);
+    if (!req.session.cart) {
+      return res.redirect('/cart');
+    }
 
-    return res.render('Cart');
+    req.session.cart.removeItem(cartIndexId);
+
+    return res.redirect('/cart?success_msg=Item was removed from cart');
   }
-
-  checkout(req, res) {}
 
   async clear(req, res) {
     var path = req.query.redirect_to;
