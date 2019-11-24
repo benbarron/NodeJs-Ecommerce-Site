@@ -8,8 +8,6 @@ const device = require('express-device');
 const fileUpload = require('express-fileupload');
 const { engine } = require('express-edge');
 
-const fs = require('fs');
-
 const app = express();
 
 app.use(device.capture());
@@ -89,7 +87,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/admin', middleware.isAdmin, require('./routes/admin'));
+app.use('/admin', require('./routes/admin'));
 app.use(require('./routes/web'));
 
 module.exports = app;

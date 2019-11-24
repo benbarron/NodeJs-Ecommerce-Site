@@ -1,12 +1,10 @@
 module.exports = (req, res, next) => {
   if (!req.user || !req.isAuthenticated()) {
-    return res.render('admin/Login', {
-      msg: 'Please log in to view this content'
-    });
+    return res.redirect('/?error_msg=Unauthorized');
   }
 
   if (!req.user.isAdmin) {
-    return res.redirect('/');
+    return res.redirect('/?error_msg=Unauthorized');
   }
 
   next();
