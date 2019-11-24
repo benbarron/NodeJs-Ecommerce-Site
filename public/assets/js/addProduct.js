@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -2046,10 +2046,10 @@ process.umask = function() { return 0; };
 
 /***/ }),
 
-/***/ "./resources/js/app.js":
-/*!*****************************!*\
-  !*** ./resources/js/app.js ***!
-  \*****************************/
+/***/ "./resources/js/addProduct.js":
+/*!************************************!*\
+  !*** ./resources/js/addProduct.js ***!
+  \************************************/
 /*! no exports provided */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2058,148 +2058,129 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
+var optionsAreaEL = document.querySelector('#options-area');
+var optionCount = 0;
+document.querySelector('#add-option-btn').addEventListener('click', function (e) {
+  e.preventDefault();
+  var el = document.createElement('div');
+  el.className = "row row-".concat(optionCount);
+  var out = "\n    <div class=\"col-sm-12\">\n      <div class=\"mb-2 row\">\n        <div class=\"col-sm-2\">\n          ".concat(optionCount == 0 ? "<label for='option-".concat(optionCount, "-name'>Option Name</label>") : '', "\n          <input type=\"text\" class=\"form-control form-control-sm\" aria-label=\"Small\" id=\"option-").concat(optionCount, "-name\" name=\"option-").concat(optionCount, "-name\" placeholder=\"Option Name\">\n        </div>\n        <div class=\"col-sm-5\">\n          ").concat(optionCount == 0 ? "<label for='option-".concat(optionCount, "-method'>Option Display Method</label>") : '', "\n          <select name=\"option-").concat(optionCount, "-method\" id=\"option-").concat(optionCount, "-method\" class=\"form-control form-control-sm\" aria-label=\"Small\">\n            <option value=\"dropdown\" class=\"form-control  form-control-sm\">Dropdown</option>\n          </select>\n        </div>\n        <div class=\"col-sm-5\">\n          ").concat(optionCount == 0 ? "<label for='option-".concat(optionCount, "-values'>Option Values</label>") : '', "\n          <input type=\"text\" class=\"form-control form-control-sm\" aria-label=\"Small\" id=\"option-").concat(optionCount, "-values\" name=\"option-").concat(optionCount, "-values\" placeholder=\"Values (Enter in comma separated list)\">\n          </div>\n        </div>\n        <hr>\n      </div>\n    ");
+  el.innerHTML = out;
+  optionsAreaEL.appendChild(el);
+  out = '';
+  optionCount += 1;
+});
+document.querySelector('#remove-option-btn').addEventListener('click', function (e) {
+  e.preventDefault();
 
-if (document.querySelector('#login-form')) {
-  document.querySelector('#login-form').addEventListener('submit', function (e) {
-    e.preventDefault();
-    var username = document.querySelector('#login-username').value;
-    var password = document.querySelector('#login-password').value;
-
-    if (!username || !password) {
-      return toastr.error('Please enter all fields');
-    }
-
-    axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/login', {
-      userfield: username,
-      password: password
-    }).then(function (res) {
-      if (res.data.userIsAdmin) {
-        window.location.href = '/admin?success_msg=Login Successful';
-      } else {
-        window.location.href = window.location.href.split('?')[0] + '?success_msg=Login Successful';
-      }
-    })["catch"](function (err) {
-      if (err.response.data.error_msg) {
-        return toastr.error(err.response.data.error_msg);
-      }
-    });
-  });
-}
-
-if (document.querySelector('#register-form')) {
-  document.querySelector('#register-form').addEventListener('submit', function (e) {
-    e.preventDefault();
-    var firstnameEL = document.querySelector('#register-firstname');
-    var lastnameEL = document.querySelector('#register-lastname');
-    var emailEL = document.querySelector('#register-email');
-    var usernameEL = document.querySelector('#register-username');
-    var password1EL = document.querySelector('#register-password1');
-    var password2EL = document.querySelector('#register-password2');
-    var firstname = firstnameEL.value;
-    var lastname = lastnameEL.value;
-    var email = emailEL.value;
-    var username = usernameEL.value;
-    var password1 = password1EL.value;
-    var password2 = password2EL.value;
-
-    if (!firstname || !lastname || !email || !username || !password1 || !password2) {
-      return toastr.error('Please enter all fields');
-    }
-
-    if (password1 !== password2) {
-      return toastr.error('Passwords do not match');
-    }
-
-    if (password1.length < 6) {
-      return toastr.error('Your password is too short');
-    }
-
-    axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/register', {
-      firstname: firstname,
-      lastname: lastname,
-      email: email,
-      username: username,
-      password: password1
-    }).then(function (res) {
-      firstnameEL.value = '';
-      lastnameEL.value = '';
-      emailEL.value = '';
-      usernameEL.value = '';
-      password1EL.value = '';
-      password2EL.value = '';
-      toastr.success(res.data.success_msg);
-    })["catch"](function (err) {
-      if (err.response.data.error_msg) {
-        toastr.error(err.response.data.error_msg);
-      }
-    }); // console.log({ firstname, lastname, email, username, password1, password2 });
-  });
-}
-
-document.addEventListener('DOMContentLoaded', function (e) {
-  var urlParams = new URLSearchParams(window.location.search);
-
-  var clearQuery = function clearQuery() {
-    if (history.pushState) {
-      var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
-      window.history.pushState({
-        path: newurl
-      }, '', newurl);
-    }
-  };
-
-  toastr.options = {
-    closeButton: false,
-    debug: false,
-    newestOnTop: false,
-    progressBar: false,
-    positionClass: 'toast-top-right',
-    preventDuplicates: false,
-    onclick: null,
-    showDuration: '300',
-    hideDuration: '1000',
-    timeOut: '5000',
-    extendedTimeOut: '1000',
-    showEasing: 'swing',
-    hideEasing: 'linear',
-    showMethod: 'fadeIn',
-    hideMethod: 'fadeOut'
-  };
-
-  if (urlParams.has('success_msg')) {
-    toastr.success(urlParams.get('success_msg'));
-    clearQuery();
+  if (optionCount === 0) {
+    return;
   }
 
-  if (urlParams.has('error_msg')) {
-    toastr.options.closeHtml = '<button><i class="icon-off"></i></button>';
-    toastr.error(urlParams.get('error_msg'));
-    clearQuery();
+  document.querySelector(".row-".concat(optionCount - 1)).remove();
+  optionCount -= 1;
+});
+var images = [];
+document.querySelector('#remove-images-btn').addEventListener('click', function (e) {
+  e.preventDefault();
+  images = [];
+  document.querySelector('#image-previews').innerHTML = '';
+  document.querySelector('#file').value = '';
+});
+document.querySelector('input#file').addEventListener('change', function (e) {
+  e.preventDefault();
+  var file = e.target.files[0];
+
+  if (!file) {
+    return;
   }
+
+  images.push(file);
+  var reader = new FileReader();
+  reader.addEventListener('load', function () {
+    var imageEL = document.createElement('img');
+    imageEL.className = 'image-upload-preview col-sm-2';
+    imageEL.setAttribute('src', reader.result);
+    document.querySelector('#image-previews').appendChild(imageEL);
+  });
+  reader.readAsDataURL(file);
+});
+document.querySelector('#add-form').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var name = document.querySelector('#product-name').value;
+  var price = document.querySelector('#product-price').value;
+  var category = document.querySelector('#product-category').value;
+  var live = document.querySelector('#product-status').value;
+  var details = tinyMCE.activeEditor.getContent();
+  var description = document.querySelector('#product-description').value;
+  var options = [];
+  var i = 0;
+
+  while (1) {
+    try {
+      var obj = {
+        name: document.querySelector('#option-' + i + '-name').value,
+        method: document.querySelector('#option-' + i + '-method').value,
+        values: document.querySelector('#option-' + i + '-values').value
+      };
+    } catch (e) {
+      break;
+    }
+
+    if (!obj.name || !obj.method || !obj.values) {
+      break;
+    }
+
+    options.push(obj);
+    i++;
+  } // console.log({ name, price, category, live, details, description, options, images });
+
+
+  if (!name || !price || !category || !live || !details || !description) {
+    return toastr.error('Please enter all fields');
+  }
+
+  if (images.length < 3) {
+    return toastr.error('Please upload 3 images');
+  }
+
+  var formData = new FormData();
+  formData.append('name', name);
+  formData.append('price', price);
+  formData.append('category', category);
+  formData.append('live', live);
+  formData.append('details', details);
+  formData.append('description', description);
+  formData.append('options', JSON.stringify(options));
+
+  for (var l = 1; l <= images.length; l++) {
+    formData.append('images-' + l, images[l - 1]);
+  }
+
+  var headers = {
+    'Content-Type': 'multipart/form-data'
+  };
+  axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/admin/products/store', formData, headers).then(function (res) {
+    if (res.data.success_msg) {
+      window.location.href = '/admin/products?success_msg=' + res.data.success_msg;
+    }
+  })["catch"](function (err) {
+    if (err.response.data.error_msg) {
+      toastr.error(err.response.data.error_msg);
+    }
+  });
 });
 
 /***/ }),
 
-/***/ "./resources/sass/main.scss":
-/*!**********************************!*\
-  !*** ./resources/sass/main.scss ***!
-  \**********************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 0:
-/*!**************************************************************!*\
-  !*** multi ./resources/js/app.js ./resources/sass/main.scss ***!
-  \**************************************************************/
+/***/ 1:
+/*!******************************************!*\
+  !*** multi ./resources/js/addProduct.js ***!
+  \******************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/benbarron/Desktop/Projects/node/node-commerce/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Users/benbarron/Desktop/Projects/node/node-commerce/resources/sass/main.scss */"./resources/sass/main.scss");
+module.exports = __webpack_require__(/*! /Users/benbarron/Desktop/Projects/node/node-commerce/resources/js/addProduct.js */"./resources/js/addProduct.js");
 
 
 /***/ })

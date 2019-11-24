@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -2046,160 +2046,436 @@ process.umask = function() { return 0; };
 
 /***/ }),
 
-/***/ "./resources/js/app.js":
-/*!*****************************!*\
-  !*** ./resources/js/app.js ***!
-  \*****************************/
+/***/ "./node_modules/uuid/index.js":
+/*!************************************!*\
+  !*** ./node_modules/uuid/index.js ***!
+  \************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var v1 = __webpack_require__(/*! ./v1 */ "./node_modules/uuid/v1.js");
+var v4 = __webpack_require__(/*! ./v4 */ "./node_modules/uuid/v4.js");
+
+var uuid = v4;
+uuid.v1 = v1;
+uuid.v4 = v4;
+
+module.exports = uuid;
+
+
+/***/ }),
+
+/***/ "./node_modules/uuid/lib/bytesToUuid.js":
+/*!**********************************************!*\
+  !*** ./node_modules/uuid/lib/bytesToUuid.js ***!
+  \**********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * Convert array of 16 byte values to UUID string format of the form:
+ * XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+ */
+var byteToHex = [];
+for (var i = 0; i < 256; ++i) {
+  byteToHex[i] = (i + 0x100).toString(16).substr(1);
+}
+
+function bytesToUuid(buf, offset) {
+  var i = offset || 0;
+  var bth = byteToHex;
+  // join used to fix memory issue caused by concatenation: https://bugs.chromium.org/p/v8/issues/detail?id=3175#c4
+  return ([bth[buf[i++]], bth[buf[i++]], 
+	bth[buf[i++]], bth[buf[i++]], '-',
+	bth[buf[i++]], bth[buf[i++]], '-',
+	bth[buf[i++]], bth[buf[i++]], '-',
+	bth[buf[i++]], bth[buf[i++]], '-',
+	bth[buf[i++]], bth[buf[i++]],
+	bth[buf[i++]], bth[buf[i++]],
+	bth[buf[i++]], bth[buf[i++]]]).join('');
+}
+
+module.exports = bytesToUuid;
+
+
+/***/ }),
+
+/***/ "./node_modules/uuid/lib/rng-browser.js":
+/*!**********************************************!*\
+  !*** ./node_modules/uuid/lib/rng-browser.js ***!
+  \**********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// Unique ID creation requires a high quality random # generator.  In the
+// browser this is a little complicated due to unknown quality of Math.random()
+// and inconsistent support for the `crypto` API.  We do the best we can via
+// feature-detection
+
+// getRandomValues needs to be invoked in a context where "this" is a Crypto
+// implementation. Also, find the complete implementation of crypto on IE11.
+var getRandomValues = (typeof(crypto) != 'undefined' && crypto.getRandomValues && crypto.getRandomValues.bind(crypto)) ||
+                      (typeof(msCrypto) != 'undefined' && typeof window.msCrypto.getRandomValues == 'function' && msCrypto.getRandomValues.bind(msCrypto));
+
+if (getRandomValues) {
+  // WHATWG crypto RNG - http://wiki.whatwg.org/wiki/Crypto
+  var rnds8 = new Uint8Array(16); // eslint-disable-line no-undef
+
+  module.exports = function whatwgRNG() {
+    getRandomValues(rnds8);
+    return rnds8;
+  };
+} else {
+  // Math.random()-based (RNG)
+  //
+  // If all else fails, use Math.random().  It's fast, but is of unspecified
+  // quality.
+  var rnds = new Array(16);
+
+  module.exports = function mathRNG() {
+    for (var i = 0, r; i < 16; i++) {
+      if ((i & 0x03) === 0) r = Math.random() * 0x100000000;
+      rnds[i] = r >>> ((i & 0x03) << 3) & 0xff;
+    }
+
+    return rnds;
+  };
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/uuid/v1.js":
+/*!*********************************!*\
+  !*** ./node_modules/uuid/v1.js ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var rng = __webpack_require__(/*! ./lib/rng */ "./node_modules/uuid/lib/rng-browser.js");
+var bytesToUuid = __webpack_require__(/*! ./lib/bytesToUuid */ "./node_modules/uuid/lib/bytesToUuid.js");
+
+// **`v1()` - Generate time-based UUID**
+//
+// Inspired by https://github.com/LiosK/UUID.js
+// and http://docs.python.org/library/uuid.html
+
+var _nodeId;
+var _clockseq;
+
+// Previous uuid creation time
+var _lastMSecs = 0;
+var _lastNSecs = 0;
+
+// See https://github.com/broofa/node-uuid for API details
+function v1(options, buf, offset) {
+  var i = buf && offset || 0;
+  var b = buf || [];
+
+  options = options || {};
+  var node = options.node || _nodeId;
+  var clockseq = options.clockseq !== undefined ? options.clockseq : _clockseq;
+
+  // node and clockseq need to be initialized to random values if they're not
+  // specified.  We do this lazily to minimize issues related to insufficient
+  // system entropy.  See #189
+  if (node == null || clockseq == null) {
+    var seedBytes = rng();
+    if (node == null) {
+      // Per 4.5, create and 48-bit node id, (47 random bits + multicast bit = 1)
+      node = _nodeId = [
+        seedBytes[0] | 0x01,
+        seedBytes[1], seedBytes[2], seedBytes[3], seedBytes[4], seedBytes[5]
+      ];
+    }
+    if (clockseq == null) {
+      // Per 4.2.2, randomize (14 bit) clockseq
+      clockseq = _clockseq = (seedBytes[6] << 8 | seedBytes[7]) & 0x3fff;
+    }
+  }
+
+  // UUID timestamps are 100 nano-second units since the Gregorian epoch,
+  // (1582-10-15 00:00).  JSNumbers aren't precise enough for this, so
+  // time is handled internally as 'msecs' (integer milliseconds) and 'nsecs'
+  // (100-nanoseconds offset from msecs) since unix epoch, 1970-01-01 00:00.
+  var msecs = options.msecs !== undefined ? options.msecs : new Date().getTime();
+
+  // Per 4.2.1.2, use count of uuid's generated during the current clock
+  // cycle to simulate higher resolution clock
+  var nsecs = options.nsecs !== undefined ? options.nsecs : _lastNSecs + 1;
+
+  // Time since last uuid creation (in msecs)
+  var dt = (msecs - _lastMSecs) + (nsecs - _lastNSecs)/10000;
+
+  // Per 4.2.1.2, Bump clockseq on clock regression
+  if (dt < 0 && options.clockseq === undefined) {
+    clockseq = clockseq + 1 & 0x3fff;
+  }
+
+  // Reset nsecs if clock regresses (new clockseq) or we've moved onto a new
+  // time interval
+  if ((dt < 0 || msecs > _lastMSecs) && options.nsecs === undefined) {
+    nsecs = 0;
+  }
+
+  // Per 4.2.1.2 Throw error if too many uuids are requested
+  if (nsecs >= 10000) {
+    throw new Error('uuid.v1(): Can\'t create more than 10M uuids/sec');
+  }
+
+  _lastMSecs = msecs;
+  _lastNSecs = nsecs;
+  _clockseq = clockseq;
+
+  // Per 4.1.4 - Convert from unix epoch to Gregorian epoch
+  msecs += 12219292800000;
+
+  // `time_low`
+  var tl = ((msecs & 0xfffffff) * 10000 + nsecs) % 0x100000000;
+  b[i++] = tl >>> 24 & 0xff;
+  b[i++] = tl >>> 16 & 0xff;
+  b[i++] = tl >>> 8 & 0xff;
+  b[i++] = tl & 0xff;
+
+  // `time_mid`
+  var tmh = (msecs / 0x100000000 * 10000) & 0xfffffff;
+  b[i++] = tmh >>> 8 & 0xff;
+  b[i++] = tmh & 0xff;
+
+  // `time_high_and_version`
+  b[i++] = tmh >>> 24 & 0xf | 0x10; // include version
+  b[i++] = tmh >>> 16 & 0xff;
+
+  // `clock_seq_hi_and_reserved` (Per 4.2.2 - include variant)
+  b[i++] = clockseq >>> 8 | 0x80;
+
+  // `clock_seq_low`
+  b[i++] = clockseq & 0xff;
+
+  // `node`
+  for (var n = 0; n < 6; ++n) {
+    b[i + n] = node[n];
+  }
+
+  return buf ? buf : bytesToUuid(b);
+}
+
+module.exports = v1;
+
+
+/***/ }),
+
+/***/ "./node_modules/uuid/v4.js":
+/*!*********************************!*\
+  !*** ./node_modules/uuid/v4.js ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var rng = __webpack_require__(/*! ./lib/rng */ "./node_modules/uuid/lib/rng-browser.js");
+var bytesToUuid = __webpack_require__(/*! ./lib/bytesToUuid */ "./node_modules/uuid/lib/bytesToUuid.js");
+
+function v4(options, buf, offset) {
+  var i = buf && offset || 0;
+
+  if (typeof(options) == 'string') {
+    buf = options === 'binary' ? new Array(16) : null;
+    options = null;
+  }
+  options = options || {};
+
+  var rnds = options.random || (options.rng || rng)();
+
+  // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
+  rnds[6] = (rnds[6] & 0x0f) | 0x40;
+  rnds[8] = (rnds[8] & 0x3f) | 0x80;
+
+  // Copy bytes to buffer, if provided
+  if (buf) {
+    for (var ii = 0; ii < 16; ++ii) {
+      buf[i + ii] = rnds[ii];
+    }
+  }
+
+  return buf || bytesToUuid(rnds);
+}
+
+module.exports = v4;
+
+
+/***/ }),
+
+/***/ "./resources/js/editProduct.js":
+/*!*************************************!*\
+  !*** ./resources/js/editProduct.js ***!
+  \*************************************/
 /*! no exports provided */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var uuid__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! uuid */ "./node_modules/uuid/index.js");
+/* harmony import */ var uuid__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(uuid__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
 
+ // determine number of rows in options area
 
-if (document.querySelector('#login-form')) {
-  document.querySelector('#login-form').addEventListener('submit', function (e) {
-    e.preventDefault();
-    var username = document.querySelector('#login-username').value;
-    var password = document.querySelector('#login-password').value;
+var optionCount = 0;
 
-    if (!username || !password) {
-      return toastr.error('Please enter all fields');
-    }
-
-    axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/login', {
-      userfield: username,
-      password: password
-    }).then(function (res) {
-      if (res.data.userIsAdmin) {
-        window.location.href = '/admin?success_msg=Login Successful';
-      } else {
-        window.location.href = window.location.href.split('?')[0] + '?success_msg=Login Successful';
-      }
-    })["catch"](function (err) {
-      if (err.response.data.error_msg) {
-        return toastr.error(err.response.data.error_msg);
-      }
-    });
-  });
-}
-
-if (document.querySelector('#register-form')) {
-  document.querySelector('#register-form').addEventListener('submit', function (e) {
-    e.preventDefault();
-    var firstnameEL = document.querySelector('#register-firstname');
-    var lastnameEL = document.querySelector('#register-lastname');
-    var emailEL = document.querySelector('#register-email');
-    var usernameEL = document.querySelector('#register-username');
-    var password1EL = document.querySelector('#register-password1');
-    var password2EL = document.querySelector('#register-password2');
-    var firstname = firstnameEL.value;
-    var lastname = lastnameEL.value;
-    var email = emailEL.value;
-    var username = usernameEL.value;
-    var password1 = password1EL.value;
-    var password2 = password2EL.value;
-
-    if (!firstname || !lastname || !email || !username || !password1 || !password2) {
-      return toastr.error('Please enter all fields');
-    }
-
-    if (password1 !== password2) {
-      return toastr.error('Passwords do not match');
-    }
-
-    if (password1.length < 6) {
-      return toastr.error('Your password is too short');
-    }
-
-    axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/register', {
-      firstname: firstname,
-      lastname: lastname,
-      email: email,
-      username: username,
-      password: password1
-    }).then(function (res) {
-      firstnameEL.value = '';
-      lastnameEL.value = '';
-      emailEL.value = '';
-      usernameEL.value = '';
-      password1EL.value = '';
-      password2EL.value = '';
-      toastr.success(res.data.success_msg);
-    })["catch"](function (err) {
-      if (err.response.data.error_msg) {
-        toastr.error(err.response.data.error_msg);
-      }
-    }); // console.log({ firstname, lastname, email, username, password1, password2 });
-  });
-}
-
-document.addEventListener('DOMContentLoaded', function (e) {
-  var urlParams = new URLSearchParams(window.location.search);
-
-  var clearQuery = function clearQuery() {
-    if (history.pushState) {
-      var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
-      window.history.pushState({
-        path: newurl
-      }, '', newurl);
-    }
-  };
-
-  toastr.options = {
-    closeButton: false,
-    debug: false,
-    newestOnTop: false,
-    progressBar: false,
-    positionClass: 'toast-top-right',
-    preventDuplicates: false,
-    onclick: null,
-    showDuration: '300',
-    hideDuration: '1000',
-    timeOut: '5000',
-    extendedTimeOut: '1000',
-    showEasing: 'swing',
-    hideEasing: 'linear',
-    showMethod: 'fadeIn',
-    hideMethod: 'fadeOut'
-  };
-
-  if (urlParams.has('success_msg')) {
-    toastr.success(urlParams.get('success_msg'));
-    clearQuery();
+while (1) {
+  if (!document.querySelector('.row-' + optionCount)) {
+    break;
   }
 
-  if (urlParams.has('error_msg')) {
-    toastr.options.closeHtml = '<button><i class="icon-off"></i></button>';
-    toastr.error(urlParams.get('error_msg'));
-    clearQuery();
+  if (optionCount > 100) {
+    break;
   }
+
+  optionCount++;
+}
+
+document.querySelector('#remove-option-btn').addEventListener('click', function (e) {
+  e.preventDefault();
+
+  if (optionCount === 0) {
+    return;
+  }
+
+  document.querySelector(".row-".concat(optionCount - 1)).remove();
+  optionCount -= 1;
+});
+var optionsAreaEL = document.querySelector('#options-area');
+document.querySelector('#add-option-btn').addEventListener('click', function (e) {
+  e.preventDefault();
+  var el = document.createElement('div');
+  el.className = "row row-".concat(optionCount);
+  var out = "\n    <div class=\"col-sm-12\">\n      <div class=\"mb-2 row\">\n        <div class=\"col-sm-2\">\n          ".concat(optionCount == 0 ? "<label for='option-".concat(optionCount, "-name'>Option Name</label>") : '', "\n          <input type=\"text\" class=\"form-control form-control-sm\" aria-label=\"Small\" id=\"option-").concat(optionCount, "-name\" name=\"option-").concat(optionCount, "-name\" placeholder=\"Option Name\">\n        </div>\n        <div class=\"col-sm-5\">\n          ").concat(optionCount == 0 ? "<label for='option-".concat(optionCount, "-method'>Option Display Method</label>") : '', "\n          <select name=\"option-").concat(optionCount, "-method\" id=\"option-").concat(optionCount, "-method\" class=\"form-control form-control-sm\" aria-label=\"Small\">\n            <option value=\"dropdown\" class=\"form-control  form-control-sm\">Dropdown</option>\n          </select>\n        </div>\n        <div class=\"col-sm-5\">\n          ").concat(optionCount == 0 ? "<label for='option-".concat(optionCount, "-values'>Option Values</label>") : '', "\n          <input type=\"text\" class=\"form-control form-control-sm\" aria-label=\"Small\" id=\"option-").concat(optionCount, "-values\" name=\"option-").concat(optionCount, "-values\" placeholder=\"Values (Enter in comma separated list)\">\n          </div>\n        </div>\n        <hr>\n      </div>\n    ");
+  el.innerHTML = out;
+  optionsAreaEL.appendChild(el);
+  out = '';
+  optionCount += 1;
+});
+document.querySelector('#edit-form').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var name = document.querySelector('#product-name').value;
+  var price = document.querySelector('#product-price').value;
+  var category = document.querySelector('#product-category').value;
+  var live = document.querySelector('#product-status').value;
+  var details = tinyMCE.activeEditor.getContent();
+  var description = document.querySelector('#product-description').value;
+  var options = [];
+  var i = 0;
+
+  while (1) {
+    try {
+      var obj = {
+        name: document.querySelector('#option-' + i + '-name').value,
+        method: document.querySelector('#option-' + i + '-method').value,
+        values: document.querySelector('#option-' + i + '-values').value
+      };
+    } catch (e) {
+      break;
+    }
+
+    if (!obj.name || !obj.method || !obj.values) {
+      break;
+    }
+
+    options.push(obj);
+    i++;
+  }
+
+  if (!name || !price || !category || !live || !details || !description) {
+    return toastr.error('Please enter all fields');
+  }
+
+  if (images.length < 3) {
+    return toastr.error('Please upload 3 images');
+  }
+
+  console.log({
+    name: name,
+    price: price,
+    category: category,
+    live: live,
+    details: details,
+    description: description,
+    options: options,
+    images: images
+  });
+  var formData = new FormData();
+  formData.append('name', name);
+  formData.append('price', price);
+  formData.append('category', category);
+  formData.append('live', live);
+  formData.append('details', details);
+  formData.append('description', description);
+  formData.append('options', JSON.stringify(options));
+  formData.append('resetImages', resetImages);
+
+  for (var l = 1; l <= images.length; l++) {
+    formData.append('images-' + l, images[l - 1]);
+  }
+
+  var headers = {
+    'Content-Type': 'multipart/form-data'
+  };
+  var productId = document.querySelector('#product-id').innerHTML;
+  axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/admin/products/update/' + productId, formData, headers).then(function (res) {
+    if (res.data.success_msg) {
+      window.location.href = '/admin/products?success_msg=' + res.data.success_msg;
+    }
+  })["catch"](function (err) {
+    if (err.response.data.error_msg) {
+      toastr.error(err.response.data.error_msg);
+    }
+  });
+});
+var images = [];
+var resetImages = false;
+var imagesELs = document.querySelector('#image-previews').children;
+
+for (var i = 0; i < imagesELs.length; i++) {
+  images.push('current');
+}
+
+document.querySelector('input#file').addEventListener('change', function (e) {
+  e.preventDefault();
+  var file = e.target.files[0];
+
+  if (!file) {
+    return;
+  }
+
+  images.push(file);
+  var reader = new FileReader();
+  reader.addEventListener('load', function () {
+    var imageEL = document.createElement('img');
+    imageEL.className = 'image-upload-preview col-sm-2';
+    imageEL.setAttribute('src', reader.result);
+    document.querySelector('#image-previews').appendChild(imageEL);
+  });
+  reader.readAsDataURL(file);
+});
+document.querySelector('#remove-images-btn').addEventListener('click', function (e) {
+  e.preventDefault();
+  resetImages = true;
+  images = [];
+  document.querySelector('#image-previews').innerHTML = '';
+  document.querySelector('#file').value = '';
 });
 
 /***/ }),
 
-/***/ "./resources/sass/main.scss":
-/*!**********************************!*\
-  !*** ./resources/sass/main.scss ***!
-  \**********************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 0:
-/*!**************************************************************!*\
-  !*** multi ./resources/js/app.js ./resources/sass/main.scss ***!
-  \**************************************************************/
+/***/ 2:
+/*!*******************************************!*\
+  !*** multi ./resources/js/editProduct.js ***!
+  \*******************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/benbarron/Desktop/Projects/node/node-commerce/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Users/benbarron/Desktop/Projects/node/node-commerce/resources/sass/main.scss */"./resources/sass/main.scss");
+module.exports = __webpack_require__(/*! /Users/benbarron/Desktop/Projects/node/node-commerce/resources/js/editProduct.js */"./resources/js/editProduct.js");
 
 
 /***/ })

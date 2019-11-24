@@ -2,6 +2,7 @@
   "name": "NodeJs E-Commerce App",
   "url": "http://localhost",
   "debug": false,
+
   "mode": "DEVELOPMENT",
   "port": 5000,
 

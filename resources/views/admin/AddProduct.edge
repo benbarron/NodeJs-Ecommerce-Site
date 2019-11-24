@@ -21,21 +21,21 @@
               <div class="form-group row mb-4">
                 <label for="product-name" class="col-sm-2 col-form-label">Product Name</label>
                 <div class="col-sm-10">
-                  <input type="text" name="name" class="form-control" id="product-name" placeholder="Product Name" value="{{ name ? name : ''}}">
+                  <input type="text" name="name" class="form-control" id="product-name" placeholder="Product Name" value="">
                 </div>
               </div>
 
               <div class="form-group row mb-4">
                 <label for="product-price" class="col-sm-2 col-form-label">Product Price</label>
                 <div class="col-sm-10">
-                  <input type="text" name="price" class="form-control" id="product-price" placeholder="Product Price" value="{{ price ? price : ''}}">
+                  <input type="text" name="price" class="form-control" id="product-price" placeholder="Product Price" value="">
                 </div>
               </div> 
 
               <div class="form-group row mb-4">
                 <label for="product-category" class="col-sm-2 col-form-label">Product Category</label>
                 <div class="col-sm-10">
-                  <input type="text" name="category" class="form-control" id="product-category" placeholder="Product Category" value="{{ price ? price : ''}}">
+                  <input type="text" name="category" class="form-control" id="product-category" placeholder="Product Category" value="">
                 </div>
               </div> 
 
@@ -43,8 +43,8 @@
                 <label for="product-status" class="col-sm-2">Live / Draft</label>
                 <div class="col-sm-10">
                   <select name="live" id="product-status">
-                    <option value="live" {{ live == 'live' ? 'selected' : null}}>Live</option>
-                    <option value="draft" {{ live == 'draft' ? 'selected' : null}}>Draft</option>
+                    <option value="live" >Live</option>
+                    <option value="draft" >Draft</option>
                   </select>
                 </div>
               </div>
@@ -52,14 +52,14 @@
               <div class="form-group row mb-4">
                 <label for="product-description" class="col-sm-2 col-form-label">Product Description</label>
                 <div class="col-sm-10">
-                  <textarea type="text" name="description" class="form-control" id="product-description" value="{{ description ? description : null}}" placeholder="Short Description that will be placed below product title"></textarea>
+                  <textarea type="text" name="description" class="form-control" id="product-description" value="" placeholder="Short Description that will be placed below product title"></textarea>
                 </div>
               </div> 
 
               <div class="form-group row mb-4">
                 <label for="tiny-mce-editor" class="col-sm-2 col-form-label">Product Details</label>
                 <div class="col-sm-10">
-                  <textarea name="details" id="product-details" cols="30" rows="10" value="{{ details ? details : null}}" placeholder="Detailed description of the product and it's features. Will be displayed on the individual product page."></textarea>
+                  <textarea name="details" id="product-details" cols="30" rows="10" value="" placeholder="Detailed description of the product and it's features. Will be displayed on the individual product page."></textarea>
                 </div>
               </div>
 
@@ -93,7 +93,7 @@
                       </div>
                     </div>
                     <div class="col-sm-3">
-                      <button class="btn btn btn-outline-danger" id="clear-images-btn">Clear Images</button>
+                      <button class="btn btn btn-outline-danger" id="remove-images-btn">Remove Images</button>
                     </div>
                   </div>
                   <div id="image-previews" class="mt-4">
@@ -105,129 +105,18 @@
           </div>
         </div>
       </form>
-
-
       </div>
     </div>
   </div>
 @endsection
 
 @section('css')
-
 @endsection
 
 @section('js')
-
-
   <script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
   <script src="https://cloud.tinymce.com/stable/tinymce.min.js?apiKey=3biagnraoc4pao3hafq9ch3uo99inbq0zu4rky8wdpu3fg65"></script>
-  
-  <script>      
-    tinymce.init({
-      selector: '#product-details',
-      branding: false,
-      theme: 'modern',
-      height: 200,
-      plugins: ["table lists pagebreak link autosave image imagetools code advlist textcolor colorpicker fullscreen"],
-      advlist_bullet_styles: 'square circle',
-      menubar: "file format edit table insert view",
-      toolbar: " code | insertfile | table | numlist bullist | pagebreak | link | undo | bold | italic | image | forecolor | backcolor | fullscreen",
-      image_advtab: true,
-
-      images_upload_url: 'postAcceptor.php',
-      images_upload_url: '/storage/app/public',
-
-      formats: {
-        alignleft: {
-          selector: 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img',
-          classes: 'left'
-        },
-        aligncenter: {
-          selector: 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img',
-          classes: 'center'
-        },
-        alignright: {
-          selector: 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img',
-          classes: 'right'
-        },
-        alignjustify: {
-          selector: 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li,table,img',
-          classes: 'full'
-        },
-        bold: {
-          inline: 'span',
-          'classes': 'bold'
-        },
-        italic: {
-          inline: 'span',
-          'classes': 'italic'
-        },
-        underline: {
-          inline: 'span',
-          'classes': 'underline',
-          exact: true
-        },
-        strikethrough: {
-          inline: 'del'
-        },
-        forecolor: {
-          inline: 'span',
-          classes: 'forecolor',
-          styles: {
-            color: '%value'
-          }
-        },
-        hilitecolor: {
-          inline: 'span',
-          classes: 'hilitecolor',
-          styles: {
-            backgroundColor: '%value'
-          }
-        },
-        custom_format: {
-          block: 'h1',
-          attributes: {
-            title: 'Header'
-          },
-          styles: {
-            color: 'red'
-          }
-        }
-      },
-
-      images_upload_handler: function(blobInfo, success, failure) {
-        var xhr, formData;
-        xhr = new XMLHttpRequest();
-        xhr.withCredentials = false;
-        xhr.open('POST', 'postAcceptor.php');
-        xhr.onload = function() {
-          var json;
-
-          if (xhr.status != 200) {
-            failure('HTTP Error: ' + xhr.status);
-            return;
-          }
-          json = JSON.parse(xhr.responseText);
-
-          if (!json || typeof json.location != 'string') {
-            failure('Invalid JSON: ' + xhr.responseText);
-            return;
-          }
-          success(json.location);
-        };
-        formData = new FormData();
-        formData.append('file', blobInfo.blob(), fileName(blobInfo));
-        xhr.send(formData);
-      },
-
-
-
-      mobile: {
-        theme: 'mobile',
-        plugins: ['autosave', 'lists', 'autolink'],
-        toolbar: ['undo', 'bold', 'italic', 'styleselect']
-      }
-    });
-  </script>
+  <script src="/assets/js/tinyMceInit.js"></script>
+  <script src="/assets/js/addProduct.js"></script>
 @endsection
 
