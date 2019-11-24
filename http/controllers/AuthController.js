@@ -98,6 +98,7 @@ class AuthController {
    */
   async logout(req, res) {
     req.logout();
+    req.session.cart = {};
 
     var redirect = req.query['redirect_to'];
 

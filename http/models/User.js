@@ -47,6 +47,10 @@ const userSchema = new mongoose.Schema({
   addresses: {
     type: Array,
     required: false
+  },
+  cart: {
+    type: String,
+    require: false
   }
 });
 

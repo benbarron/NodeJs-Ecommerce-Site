@@ -51,8 +51,19 @@ app.use(passport.session());
 
 app.use((req, res, next) => {
   const { Cart } = interfaces;
+  var currentCart;
 
-  req.session.cart = new Cart(req.session.cart ? req.session.cart : {});
+  if (req.user) {
+    currentCart = JSON.parse(req.user.cart);
+  } else {
+    currentCart = req.session.cart;
+  }
+
+  if (typeof currentCart == 'undefined') {
+    currentCart = {};
+  }
+
+  req.session.cart = new Cart(currentCart);
 
   res.locals.path = req.path;
   res.locals.user = req.user;

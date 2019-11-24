@@ -1,4 +1,4 @@
-const url = require('url');
+const { User } = model;
 
 class CartController {
   async add(req, res) {
@@ -24,13 +24,15 @@ class CartController {
       }
     }
 
-    console.log(name);
-
     req.session.cart.addItem({ _id, price, name, image }, quantity, options);
 
-    req.session.cart.printCartNumbers();
+    res.redirect('/cart?success_msg=Product added to cart');
 
-    return res.redirect('/cart?success_msg=Product added to cart');
+    if (req.user) {
+      const user = await User.findOne({ _id: req.user._id });
+      user.cart = JSON.stringify(req.session.cart);
+      await user.save();
+    }
   }
 
   async removeOne(req, res) {
@@ -48,7 +50,13 @@ class CartController {
 
     req.session.cart.removeItem(cartIndexId);
 
-    return res.redirect('/cart?success_msg=Item was removed from cart');
+    res.redirect('/cart?success_msg=Item was removed from cart');
+
+    if (req.user) {
+      const user = await User.findOne({ _id: req.user._id });
+      user.cart = JSON.stringify(req.session.cart);
+      await user.save();
+    }
   }
 
   async clear(req, res) {
@@ -60,7 +68,13 @@ class CartController {
 
     req.session.cart = {};
 
-    return res.redirect(path + '?success_msg=Shopping Cart Has Been Cleared');
+    res.redirect(path + '?success_msg=Shopping Cart Has Been Cleared');
+
+    if (req.user) {
+      const user = await User.findOne({ _id: req.user._id });
+      user.cart = JSON.stringify(req.session.cart);
+      await user.save();
+    }
   }
 }
 
