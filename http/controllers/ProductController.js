@@ -10,7 +10,7 @@ class ProductController {
   async view(req, res) {
     const products = await Product.find();
 
-    return res.render('admin/ViewProducts', { products });
+    return res.render('admin/ViewProducts', { products, ...req.query });
   }
 
   /*

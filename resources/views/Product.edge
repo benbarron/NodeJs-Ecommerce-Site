@@ -31,15 +31,26 @@
               </h2>
             </div>
 
-           
+            <form action="/cart/add?options=
+              @if(product.options.length > 0)
+                @each(option in product.options) 
+                  {{ option.name }}, 
+                @endeach   
+              @endif
+              " method="POST">
+              
+              <input type="hidden" name="_id" value={{ product._id }}>
+              <input type="hidden" name="price" value={{ product.price }}>
+              <input type="hidden" name="name" value={{ product.name }}>
+
             @if(product.options.length > 0) 
               @each(option in product.options)
                 <div class="py-2 mt-2 d-flex">
                   <h5 class="mr-5">{{ option.name }}</h5>
                   @if(option.method == 'dropdown') 
-                    <select name="option-{{ $loop.index }}">
+                    <select name="{{ option.name }}">
                       @each(value in option.values.split(','))
-                        <option value="{{ value }}">{{ value }}</option>
+                        <option value="{{ value }}" >{{ value }}</option>
                       @endeach
                     </select>
                   @else
@@ -48,20 +59,29 @@
                 </div>
               @endeach
             @endif
+
+            <div class="py-2 mt-2 d-flex">
+              <h5 class="mr-5">Quantity</h5>
+              <select name="quantity">
+                @each(count in [1,2,3,4,5,6,7,8,9,10])
+                  <option value="{{ count }}">{{ count }}</option>
+                @endeach
+              </select>
+            </div>
            
 
             <div class="mt-4">
-              <div class="btn btn-primary btn-">
+              <button class="btn btn-primary btn-">
                 <i class="fas fa-cart-plus fa-lg mr-2"></i> 
                 Add to Cart
-              </div>
+              </button>
 
               <div class="btn btn-default btn- ">
                 <i class="fas fa-heart fa-lg mr-2"></i> 
                 Add to Wishlist
               </div>
             </div>
-
+          </form>
 
           </div>
         </div>

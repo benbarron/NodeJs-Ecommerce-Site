@@ -59,7 +59,7 @@
           <div class="sidebar">
             <nav class="mt-2">
               <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                <li class="nav-item has-treeview ">
+                <li class="nav-item has-treeview {{ path.startsWith('/admin/products') ? 'menu-open' : '' }}">
                   <a href="#" class="nav-link ">
                     <i class="nav-icon fas fa-cube"></i>
                     <p>
@@ -83,7 +83,7 @@
                     </li>
                   </ul>
                 </li>
-                <li class="nav-item has-treeview ">
+                <li class="nav-item has-treeview {{ path.startsWith('/admin/users') ? 'menu-open' : '' }}">
                     <a href="#" class="nav-link ">
                       <i class="nav-icon fas fa-users"></i>
                       <p>

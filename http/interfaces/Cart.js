@@ -8,9 +8,13 @@ class Cart {
    * tax        -   float
    * total      -   float
    * --------------------------- */
-  constructor() {
+  constructor(oldCart) {
     this.taxRate = 0.09;
-    this.resetCart();
+    this.items = oldCart.items || [];
+    this.quantity = oldCart.quantity || 0;
+    this.tax = oldCart.tax || 0.0;
+    this.subTotal = oldCart.subTotal || 0.0;
+    this.total = oldCart.total || 0.0;
   }
 
   resetCart() {
@@ -118,6 +122,10 @@ class Cart {
 
   getQuantity() {
     return this.quantity;
+  }
+
+  getItems() {
+    return this.items;
   }
 
   printCartNumbers() {

@@ -6,7 +6,13 @@ route.get('/shop', (req, res) => {
   res.render('Shop');
 });
 
-route.get('/product/:_id', PagesController.viewProduct);
+route.get('/products/:_id', PagesController.viewProduct);
+
+route.post('/cart/add', CartController.add);
+route.get('/cart', CartController.view);
+route.get('/cart/clear', CartController.clear);
+
+route.get('/checkout', CartController.checkout);
 
 route.post('/api/register', AuthController.register);
 route.post('/api/login', AuthController.login);

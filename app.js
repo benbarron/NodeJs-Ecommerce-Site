@@ -50,15 +50,15 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use((req, res, next) => {
-  if (!req.session.cart) {
-    const { Cart } = interfaces;
+  const { Cart } = interfaces;
 
-    req.session.cart = new Cart();
-  }
+  req.session.cart = new Cart(req.session.cart ? req.session.cart : {});
 
   res.locals.path = req.path;
   res.locals.user = req.user;
   res.locals.cart = req.session.cart;
+
+  // console.log(req.session.cart);
 
   next();
 });
