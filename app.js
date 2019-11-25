@@ -53,7 +53,7 @@ app.use((req, res, next) => {
   const { Cart } = interfaces;
   var currentCart;
 
-  if (req.user) {
+  if (req.isAuthenticated()) {
     currentCart = JSON.parse(req.user.cart);
   } else {
     currentCart = req.session.cart;

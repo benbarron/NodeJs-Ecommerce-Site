@@ -7,8 +7,8 @@ route.get('/cart', PagesController.cart);
 route.get('/checkout', PagesController.checkout);
 
 route.post('/cart/add', CartController.add);
-// route.post('/cart/add-one', CartController.addOne);
-route.get('/cart/remove/:cartIndexId', CartController.removeOne);
+route.post('/cart/update-quantity', CartController.updateQuantity);
+route.get('/cart/remove/:cartIndexId', CartController.removeItem);
 route.get('/cart/clear', CartController.clear);
 
 route.post('/api/register', AuthController.register);

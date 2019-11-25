@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 
+const { Cart } = interfaces;
 const { User } = model;
 
 class AuthController {
@@ -27,24 +28,45 @@ class AuthController {
       return res.status(401).json({ error_msg: 'Invalid credentials' });
     }
 
-    req.login(user, err => {
+    req.login(user, async err => {
       if (err) {
         return res.status(401).json({
           error_msg: 'There was an error logging you in'
         });
       }
 
+      // combine cart of user and session
+      let cart;
+
+      if (user.cart != '{}' && user.cart != '') {
+        var userCart = JSON.parse(user.cart);
+
+        try {
+          cart = {
+            taxRate: 0.09,
+            items: [...req.session.cart.items, ...userCart.items],
+            subTotal: req.session.cart.subTotal + userCart.subTotal,
+            tax: req.session.cart.tax + userCart.tax,
+            total: req.session.cart.total + userCart.total
+          };
+        } catch (e) {
+          cart = req.session.cart;
+          console.log(e);
+        }
+      } else {
+        cart = req.session.cart;
+      }
+
+      console.log(cart);
+
+      user.cart = JSON.stringify(cart);
+      req.session.cart = new Cart(cart);
+
+      await user.save();
+
       return res.status(201).json({ userIsAdmin: user.isAdmin });
     });
   }
-
-  // async logout(req, res) {
-  //   req.logout();
-
-  //   return res.render('Login', {
-  //     success_msg: 'You have been logged out'
-  //   });
-  // }
 
   /*
    * Register

@@ -28,14 +28,14 @@ class CartController {
 
     res.redirect('/cart?success_msg=Product added to cart');
 
-    if (req.user) {
+    if (req.isAuthenticated()) {
       const user = await User.findOne({ _id: req.user._id });
       user.cart = JSON.stringify(req.session.cart);
       await user.save();
     }
   }
 
-  async removeOne(req, res) {
+  async removeItem(req, res) {
     const { cartIndexId } = req.params;
 
     if (!cartIndexId) {
@@ -52,11 +52,29 @@ class CartController {
 
     res.redirect('/cart?success_msg=Item was removed from cart');
 
-    if (req.user) {
+    if (req.isAuthenticated()) {
       const user = await User.findOne({ _id: req.user._id });
       user.cart = JSON.stringify(req.session.cart);
       await user.save();
     }
+  }
+
+  async updateQuantity(req, res) {
+    for (const key of Object.keys(req.body)) {
+      if (req.body[key] == 0) {
+        req.session.cart.removeItem(key);
+      } else {
+        req.session.cart.updateQuantity(key, Number(req.body[key]));
+      }
+    }
+
+    if (req.isAuthenticated()) {
+      const user = await User.findOne({ _id: req.user._id });
+      user.cart = JSON.stringify(req.session.cart);
+      await user.save();
+    }
+
+    return res.redirect('/cart?success_msg=You cart has been updated');
   }
 
   async clear(req, res) {
@@ -70,7 +88,7 @@ class CartController {
 
     res.redirect(path + '?success_msg=Shopping Cart Has Been Cleared');
 
-    if (req.user) {
+    if (req.isAuthenticated()) {
       const user = await User.findOne({ _id: req.user._id });
       user.cart = JSON.stringify(req.session.cart);
       await user.save();

@@ -2,15 +2,17 @@
 @section('content')
 <div class="container container-large">
 
-  <div class="row py-5" style="width: 100%">
+  <div class="row py-1" style="width: 100%">
     <div class="col-sm-12 col-md-6 col-lg-9">
       @if(cart.getItems().length > 0) 
       <div class="card">
         <div class="card-body">
+          <form action="/cart/update-quantity" method="POST">
             <table class="table">
                 <thead>
                   <tr>
                     <th>Product</th>
+                    <th>Options</th>
                     <th>Price</th>
                     <th>Quantity</th>
                     <th>Remove</th>
@@ -24,18 +26,27 @@
                       <h4 class="mr-3">{{ item.product.name }}</h4>
                     </td>
                     <td>
-                      $ {{ item.product.price * item.quantity }}
+                      @if(item.options)
+                        @each((value, key) in item.options)
+                          <span>{{ key }}: {{ value }}</span><br>
+                        @endeach
+                      @endif
                     </td>
                     <td>
-                      {{ item.quantity }}
+                      $ {{ item.product.price  }}
                     </td>
                     <td>
-                      <a href="/cart/remove/{{ item.cartIndexId }}" class="btn btn-sm btn-outline-danger"><i class="fas fa-minus"></i></a>
+                      <input type="text" name="{{ item.cartIndexId }}" class="form-control" style="width:80px;" value={{ item.quantity }}>
+                    </td>
+                    <td>
+                      <a href="/cart/remove/{{ item.cartIndexId }}" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></a>
                     </td>
                   </tr>
                   @endeach
                 </tbody>
               </table>
+              <button type="submit" class="btn btn-outline-success float-right">Update Cart</button>
+            </form>
         </div>
       </div>
       @else 

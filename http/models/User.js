@@ -50,7 +50,8 @@ const userSchema = new mongoose.Schema({
   },
   cart: {
     type: String,
-    require: false
+    require: true,
+    default: '{}'
   }
 });
 

@@ -5,7 +5,8 @@ const { Product } = model;
 
 class ProductController {
   /*
-   * shows list of all products
+   *
+   *
    */
   async view(req, res) {
     const products = await Product.find();
@@ -14,14 +15,16 @@ class ProductController {
   }
 
   /*
-   * show form to add product
+   *
+   *
    */
   async add(req, res) {
     return res.render('admin/AddProduct');
   }
 
   /*
-   *  stores a new product instance
+   *
+   *
    */
   async store(req, res) {
     const { name, price, live, category, description, details } = req.body;
@@ -89,7 +92,8 @@ class ProductController {
   }
 
   /*
-   *  shows form to edit product
+   *
+   *
    */
   async edit(req, res) {
     const { _id } = req.params;
@@ -102,7 +106,8 @@ class ProductController {
   }
 
   /*
-   *  updates product instance
+   *
+   *
    */
   async update(req, res) {
     const { name, price, live, category } = req.body;
@@ -166,7 +171,8 @@ class ProductController {
   }
 
   /*
-   *  deletes a product
+   *
+   *
    */
   async delete(req, res) {
     await Product.deleteOne({ _id: req.params._id });
