@@ -15,6 +15,8 @@ class Cart {
     this.tax = oldCart.tax || 0.0;
     this.subTotal = oldCart.subTotal || 0.0;
     this.total = oldCart.total || 0.0;
+
+    this.updatePricesAndQuantity();
   }
 
   resetCart() {
@@ -69,7 +71,7 @@ class Cart {
   updateQuantity(id, newQuantity) {
     for (let i = 0; i < this.items.length; i++) {
       if (id === this.items[i].cartIndexId) {
-        this.items[i].quantity = newQuantity;
+        this.items[i].quantity = Number(newQuantity);
       }
     }
 
@@ -96,7 +98,7 @@ class Cart {
 
     for (let i = 0; i < this.items.length; i++) {
       priceSum += this.items[i].quantity * this.items[i].product.price;
-      quantitySum += this.items[i].quantity;
+      quantitySum += Number(this.items[i].quantity);
     }
 
     this.quantity = quantitySum;

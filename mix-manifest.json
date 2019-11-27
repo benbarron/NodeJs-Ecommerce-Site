@@ -3,5 +3,6 @@
     "/public/assets/js/app.js": "/public/assets/js/app.js",
     "/public/assets/css/app.css": "/public/assets/css/app.css",
     "/public/assets/js/editProduct.js": "/public/assets/js/editProduct.js",
+    "/public/assets/js/shoppingCart.js": "/public/assets/js/shoppingCart.js",
     "/public/assets/js/tinyMceInit.js": "/public/assets/js/tinyMceInit.js"
 }

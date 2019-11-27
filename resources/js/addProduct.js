@@ -1,13 +1,19 @@
 import axios from 'axios';
 
+const addOptionButtonEL = document.querySelector('#add-option-btn');
 const optionsAreaEL = document.querySelector('#options-area');
+const removeOptionButtonEL = document.querySelector('#remove-option-btn');
+const removeImagesButtonEL = document.querySelector('#remove-images-btn');
+const addProductForm = document.querySelector('#add-form');
+var productImageUploads = [];
+
 var optionCount = 0;
 
-document.querySelector('#add-option-btn').addEventListener('click', e => {
+addOptionButtonEL.addEventListener('click', e => {
   e.preventDefault();
 
-  var el = document.createElement('div');
-  el.className = `row row-${optionCount}`;
+  var newOptionRow = document.createElement('div');
+  newOptionRow.className = `row row-${optionCount}`;
 
   var out = `
     <div class="col-sm-12">
@@ -43,15 +49,15 @@ document.querySelector('#add-option-btn').addEventListener('click', e => {
       </div>
     `;
 
-  el.innerHTML = out;
+  newOptionRow.innerHTML = out;
 
-  optionsAreaEL.appendChild(el);
+  optionsAreaEL.appendChild(newOptionRow);
 
   out = '';
   optionCount += 1;
 });
 
-document.querySelector('#remove-option-btn').addEventListener('click', e => {
+removeOptionButtonEL.addEventListener('click', e => {
   e.preventDefault();
 
   if (optionCount === 0) {
@@ -63,12 +69,10 @@ document.querySelector('#remove-option-btn').addEventListener('click', e => {
   optionCount -= 1;
 });
 
-var images = [];
-
-document.querySelector('#remove-images-btn').addEventListener('click', e => {
+removeImagesButtonEL.addEventListener('click', e => {
   e.preventDefault();
 
-  images = [];
+  productImageUploads = [];
   document.querySelector('#image-previews').innerHTML = '';
   document.querySelector('#file').value = '';
 });
@@ -82,7 +86,7 @@ document.querySelector('input#file').addEventListener('change', e => {
     return;
   }
 
-  images.push(file);
+  productImageUploads.push(file);
 
   const reader = new FileReader();
 
@@ -96,7 +100,7 @@ document.querySelector('input#file').addEventListener('change', e => {
   reader.readAsDataURL(file);
 });
 
-document.querySelector('#add-form').addEventListener('submit', e => {
+addProductForm.addEventListener('submit', e => {
   e.preventDefault();
 
   var name = document.querySelector('#product-name').value;
@@ -135,7 +139,7 @@ document.querySelector('#add-form').addEventListener('submit', e => {
     return toastr.error('Please enter all fields');
   }
 
-  if (images.length < 3) {
+  if (productImageUploads.length < 3) {
     return toastr.error('Please upload 3 images');
   }
 
@@ -148,8 +152,8 @@ document.querySelector('#add-form').addEventListener('submit', e => {
   formData.append('description', description);
   formData.append('options', JSON.stringify(options));
 
-  for (let l = 1; l <= images.length; l++) {
-    formData.append('images-' + l, images[l - 1]);
+  for (let l = 1; l <= productImageUploads.length; l++) {
+    formData.append('images-' + l, productImageUploads[l - 1]);
   }
 
   var headers = { 'Content-Type': 'multipart/form-data' };

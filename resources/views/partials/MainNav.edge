@@ -28,7 +28,7 @@
             <a href="{{ user.isAdmin ? '/admin' : '/profile' }}" class="btn btn-sm mx-1 mt-1">Welcome, {{ user.firstname }} {{ user.isAdmin ? '(Admin)' : '' }}</a>
           </li>
           <li class="nav-item">
-            <a href="/logout?redirect_to={{ path }}" class="nav-link"><i class="fas fa-sign-out-alt"></i></a>
+            <a href="/auth/logout?redirect_to={{ path }}" class="nav-link"><i class="fas fa-sign-out-alt"></i></a>
           </li>
         @else 
           <li class="nav-item">
@@ -40,7 +40,7 @@
         <li class="nav-item">
           <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#">
           <i class="fas fa-shopping-cart"></i>
-          <span class="badge badge-danger navbar-badge">{{ cart.getQuantity() }}</span>
+          <span class="badge badge-danger navbar-badge">{{ cart.quantity }}</span>
           </a>
         </li>
       </ul>

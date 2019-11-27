@@ -33,7 +33,7 @@ if (env('mode') === 'PRODUCTION') {
       .createServer(app)
       .listen(80, () => success(`Http server started on port ${80}`));
   }
-} else {
+} else if (env('mode') === 'DEVELOPMENT') {
   const port = env('port');
 
   app.listen(port, () => success(`Development server started on port ${port}`));

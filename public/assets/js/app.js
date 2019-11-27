@@ -2058,9 +2058,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
+var loginFormEL = document.querySelector('#login-form');
+var registerFormEL = document.querySelector('#register-form');
 
-if (document.querySelector('#login-form')) {
-  document.querySelector('#login-form').addEventListener('submit', function (e) {
+if (loginFormEL) {
+  loginFormEL.addEventListener('submit', function (e) {
     e.preventDefault();
     var username = document.querySelector('#login-username').value;
     var password = document.querySelector('#login-password').value;
@@ -2069,7 +2071,7 @@ if (document.querySelector('#login-form')) {
       return toastr.error('Please enter all fields');
     }
 
-    axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/login', {
+    axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/auth/login', {
       userfield: username,
       password: password
     }).then(function (res) {
@@ -2086,8 +2088,8 @@ if (document.querySelector('#login-form')) {
   });
 }
 
-if (document.querySelector('#register-form')) {
-  document.querySelector('#register-form').addEventListener('submit', function (e) {
+if (registerFormEL) {
+  registerFormEL.addEventListener('submit', function (e) {
     e.preventDefault();
     var firstnameEL = document.querySelector('#register-firstname');
     var lastnameEL = document.querySelector('#register-lastname');
@@ -2114,7 +2116,7 @@ if (document.querySelector('#register-form')) {
       return toastr.error('Your password is too short');
     }
 
-    axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/register', {
+    axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/auth/register', {
       firstname: firstname,
       lastname: lastname,
       email: email,
@@ -2139,7 +2141,7 @@ if (document.querySelector('#register-form')) {
 document.addEventListener('DOMContentLoaded', function (e) {
   var urlParams = new URLSearchParams(window.location.search);
 
-  var clearQuery = function clearQuery() {
+  var clearQueryString = function clearQueryString() {
     if (history.pushState) {
       var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname;
       window.history.pushState({
@@ -2168,19 +2170,19 @@ document.addEventListener('DOMContentLoaded', function (e) {
 
   if (urlParams.has('success_msg')) {
     toastr.success(urlParams.get('success_msg'));
-    clearQuery();
+    clearQueryString();
   }
 
   if (urlParams.has('error_msg')) {
     toastr.options.closeHtml = '<button><i class="icon-off"></i></button>';
     toastr.error(urlParams.get('error_msg'));
-    clearQuery();
+    clearQueryString();
   }
 
   if (urlParams.has('warning_msg')) {
     toastr.options.closeHtml = '<button><i class="icon-off"></i></button>';
     toastr.warning(urlParams.get('warning_msg'));
-    clearQuery();
+    clearQueryString();
   }
 });
 

@@ -49,54 +49,20 @@ app.set('views', path.resolve(__dirname, 'resources/views'));
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use((req, res, next) => {
-  const { Cart } = interfaces;
-  var currentCart;
+app.use(require('./http/middleware/initCart'));
 
-  if (req.isAuthenticated()) {
-    currentCart = JSON.parse(req.user.cart);
-  } else {
-    currentCart = req.session.cart;
-  }
+if (env('mode') == 'PRODUCTION') {
+  app.use(require('./http/middleware/traffic'));
+}
 
-  if (typeof currentCart == 'undefined') {
-    currentCart = {};
-  }
-
-  req.session.cart = new Cart(currentCart);
-
-  res.locals.path = req.path;
-  res.locals.user = req.user;
-  res.locals.cart = req.session.cart;
-
-  next();
-});
-
-app.use((req, res, next) => {
-  req.startTime = new Date().getTime();
-
-  res.on('finish', async () => {
-    const { Traffic } = model;
-
-    const traffic = new Traffic();
-
-    var id = req.user ? req.user._id : '';
-
-    traffic.ip = req.connection.remoteAddress || 'no ip available';
-    traffic.deviceType = req.device.type;
-    traffic.deviceModel = '';
-    traffic.method = req.method;
-    traffic.path = req.path;
-    traffic.requestTime = new Date().getTime() - req.startTime;
-    traffic.user = id;
-
-    await traffic.save();
-  });
-
-  next();
-});
+// app.use((req, res, next) => {
+//   console.log(req.session.cart);
+//   next();
+// });
 
 app.use('/admin', require('./routes/admin'));
-app.use(require('./routes/web'));
+app.use('/auth', require('./routes/auth'));
+app.use('/cart', require('./routes/cart'));
+app.use('/', require('./routes/web'));
 
 module.exports = app;

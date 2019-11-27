@@ -1,7 +1,10 @@
 import axios from 'axios';
 
-if (document.querySelector('#login-form')) {
-  document.querySelector('#login-form').addEventListener('submit', e => {
+const loginFormEL = document.querySelector('#login-form');
+const registerFormEL = document.querySelector('#register-form');
+
+if (loginFormEL) {
+  loginFormEL.addEventListener('submit', e => {
     e.preventDefault();
 
     var username = document.querySelector('#login-username').value;
@@ -12,7 +15,7 @@ if (document.querySelector('#login-form')) {
     }
 
     axios
-      .post('/api/login', { userfield: username, password })
+      .post('/auth/login', { userfield: username, password })
       .then(res => {
         if (res.data.userIsAdmin) {
           window.location.href = '/admin?success_msg=Login Successful';
@@ -30,8 +33,8 @@ if (document.querySelector('#login-form')) {
   });
 }
 
-if (document.querySelector('#register-form')) {
-  document.querySelector('#register-form').addEventListener('submit', e => {
+if (registerFormEL) {
+  registerFormEL.addEventListener('submit', e => {
     e.preventDefault();
 
     var firstnameEL = document.querySelector('#register-firstname');
@@ -68,7 +71,7 @@ if (document.querySelector('#register-form')) {
     }
 
     axios
-      .post('/api/register', {
+      .post('/auth/register', {
         firstname,
         lastname,
         email,
@@ -98,7 +101,7 @@ if (document.querySelector('#register-form')) {
 document.addEventListener('DOMContentLoaded', e => {
   const urlParams = new URLSearchParams(window.location.search);
 
-  const clearQuery = () => {
+  const clearQueryString = () => {
     if (history.pushState) {
       var newurl =
         window.location.protocol +
@@ -131,7 +134,7 @@ document.addEventListener('DOMContentLoaded', e => {
   if (urlParams.has('success_msg')) {
     toastr.success(urlParams.get('success_msg'));
 
-    clearQuery();
+    clearQueryString();
   }
 
   if (urlParams.has('error_msg')) {
@@ -139,7 +142,7 @@ document.addEventListener('DOMContentLoaded', e => {
 
     toastr.error(urlParams.get('error_msg'));
 
-    clearQuery();
+    clearQueryString();
   }
 
   if (urlParams.has('warning_msg')) {
@@ -147,6 +150,6 @@ document.addEventListener('DOMContentLoaded', e => {
 
     toastr.warning(urlParams.get('warning_msg'));
 
-    clearQuery();
+    clearQueryString();
   }
 });
