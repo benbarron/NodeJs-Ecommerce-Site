@@ -25,7 +25,13 @@ route.get('/products/:_id', async (req, res) => {
       throw 'not found error';
     }
 
-    return res.render('Product', { product });
+    var productOptions = '';
+
+    for (let i = 0; i < product.options.length; i++) {
+      productOptions += `${product.options[i].name},`;
+    }
+
+    return res.render('Product', { product, productOptions });
   } catch (e) {
     return res.redirect(
       '/?warning_msg=Product with id ' + _id + ' was not found'

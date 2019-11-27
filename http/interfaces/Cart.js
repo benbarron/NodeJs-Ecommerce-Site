@@ -35,12 +35,12 @@ class Cart {
       var itemListString = JSON.stringify({
         ...this.items[i].product,
         ...this.items[i].options
-      });
+      }).trim();
 
       var newProductString = JSON.stringify({
         ...newProduct,
         ...options
-      });
+      }).trim();
 
       if (itemListString === newProductString) {
         this.items[i].quantity += quantity;
@@ -58,7 +58,7 @@ class Cart {
       cartIndexId = uuid();
 
       this.items.push({
-        cartIndexId,
+        cartIndexId: newProduct._id + '===' + uuid(),
         product: newProduct,
         options,
         quantity
@@ -66,6 +66,16 @@ class Cart {
     }
 
     this.updatePricesAndQuantity();
+  }
+
+  getItemById(id) {
+    for (let i = 0; i < this.items.length; i++) {
+      if (id === this.items[i].cartIndexId) {
+        return this.items[i];
+      }
+    }
+
+    return undefined;
   }
 
   updateQuantity(id, newQuantity) {
@@ -145,59 +155,5 @@ class Cart {
     }
   }
 }
-
-// const products = [
-//   {
-//     id: 1,
-//     name: 'Product 1',
-//     images: ['/storage/product-images/macbook.png'],
-//     price: 1399.99
-//   },
-//   {
-//     id: 2,
-//     name: 'Product 2',
-//     images: ['/storage/product-images/macbook.png'],
-//     price: 1499.99
-//   },
-//   {
-//     id: 3,
-//     name: 'Product 3',
-//     images: ['/storage/product-images/macbook.png'],
-//     price: 1399.99
-//   },
-//   {
-//     id: 4,
-//     name: 'Product 4',
-//     images: ['/storage/product-images/macbook.png'],
-//     price: 1499.99
-//   },
-//   {
-//     id: 5,
-//     name: 'Product 5',
-//     images: ['/storage/product-images/macbook.png'],
-//     price: 1399.99
-//   },
-//   {
-//     id: 6,
-//     name: 'Product 6',
-//     images: ['/storage/product-images/macbook.png'],
-//     price: 1499.99
-//   }
-// ];
-
-// const cart = new Cart();
-
-// var i1 = cart.addItem(products[1], 2, { ram: '16gb', size: '15in' });
-// var i2 = cart.addItem(products[1], 2, { ram: '16gb', size: '17in' });
-// // var i2 = cart.addItem(products[0], 1);
-// // var i3 = cart.addItem(products[1], 1, { ram: '16gb', size: '13in' });
-
-// // cart.removeItem(i2);
-// // cart.updateQuantity(i1, 3);
-
-// // cart.emptyCart();
-
-// cart.printCartNumbers();
-// cart.printCartItems();
 
 module.exports = Cart;

@@ -1,11 +1,14 @@
 module.exports = (req, res, next) => {
   const { Cart } = interfaces;
-  var currentCart;
+  let currentCart;
+  let wishlist;
 
   if (req.isAuthenticated()) {
     currentCart = JSON.parse(req.user.cart);
+    wishlist = req.user.wishlist ? JSON.parse(req.user.wishlist) : {};
   } else {
     currentCart = req.session.cart;
+    wishlist = {};
   }
 
   if (typeof currentCart == 'undefined') {
@@ -13,10 +16,7 @@ module.exports = (req, res, next) => {
   }
 
   req.session.cart = new Cart(currentCart);
-
-  res.locals.path = req.path;
-  res.locals.user = req.user;
-  res.locals.cart = req.session.cart;
+  req.session.wishlist = new Cart(wishlist);
 
   next();
 };

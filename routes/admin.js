@@ -26,6 +26,10 @@ route.post('/products/store', apiAdmin, async (req, res) => {
 
   const options = JSON.parse(req.body.options);
 
+  for (let i = 0; i < options.length; i++) {
+    options[i].values = options[i].values.trim();
+  }
+
   if (!name || !price || !live || !category || !description || !details) {
     return res.status(400).json({ error_msg: 'Please enter all fields' });
   }
@@ -102,7 +106,11 @@ route.post('/products/update/:_id', apiAdmin, async (req, res) => {
   const { name, price, live, category } = req.body;
   const { description, details, resetImages } = req.body;
 
-  const options = JSON.parse(req.body.options);
+  var options = JSON.parse(req.body.options);
+
+  for (let i = 0; i < options.length; i++) {
+    options[i].values = options[i].values.trim();
+  }
 
   if (!name || !price || !live || !category || !description || !details) {
     return res.status(400).json({ error_msg: 'Please enter all fields' });
@@ -180,6 +188,26 @@ route.get('/products/delete/:_id', webAdmin, async (req, res) => {
   rimraf(productDir, () => {
     return res.redirect('/admin/products?success_msg=Product Deleted');
   });
+});
+
+route.get('/settings/background', async (req, res) => {
+  return res.render('admin/SettingsBackground');
+});
+
+route.post('/settings/background', async (req, res) => {
+  if (!req.files) {
+    return res.status(400).json({ error_msg: 'There are no files' });
+  }
+
+  if (req.files.image.mimetype.split('/')[0] !== 'image') {
+    return res.status(400).json({ error_msg: 'File must be an image' });
+  }
+
+  req.files.image.mv(
+    path.resolve(__dirname, '../public/storage/backgrounds/main-background.png')
+  );
+
+  return res.json({ success_msg: 'Background Changed' });
 });
 
 module.exports = route;

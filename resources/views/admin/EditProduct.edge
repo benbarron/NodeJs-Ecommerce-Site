@@ -78,7 +78,7 @@
                                 @if($loop.index == 0)
                                   <label for='option-{{ $loop.index }}-name'>Option Name</label>
                                 @endif
-                                <input type="text" class="form-control form-control-sm" aria-label="Small" value={{ option.name }} id="option-{{ $loop.index }}-name" name="option-{{ $loop.index }}-name" placeholder="Option Name">
+                                <input type="text" class="form-control form-control-sm" aria-label="Small" value="{{ option.name }}" id="option-{{ $loop.index }}-name" name="option-{{ $loop.index }}-name" placeholder="Option Name">
 
                               </div>
                               <div class="col-sm-5">
@@ -93,7 +93,7 @@
                                 @if($loop.index == 0)
                                   <label for='option-{{ $loop.index }}-name'>Option Value</label>
                                 @endif
-                                <input type="text" class="form-control form-control-sm" aria-label="Small" value={{ option.values }} id="option-{{ $loop.index }}-values" name="option-{{ $loop.index }}-values" placeholder="Values (Enter in comma separated list)">
+                                <input type="text" class="form-control form-control-sm" aria-label="Small" value="{{ option.values }}" id="option-{{ $loop.index }}-values" name="option-{{ $loop.index }}-values" placeholder="Values (Enter in comma separated list)">
                                 
                               </div>
                             </div>

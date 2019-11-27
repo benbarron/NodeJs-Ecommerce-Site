@@ -49,20 +49,17 @@ app.set('views', path.resolve(__dirname, 'resources/views'));
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(require('./http/middleware/initCart'));
+app.use(mware.initCart);
+app.use(mware.initLocals);
 
 if (env('mode') == 'PRODUCTION') {
-  app.use(require('./http/middleware/traffic'));
+  app.use(mware.traffic);
 }
-
-// app.use((req, res, next) => {
-//   console.log(req.session.cart);
-//   next();
-// });
 
 app.use('/admin', require('./routes/admin'));
 app.use('/auth', require('./routes/auth'));
 app.use('/cart', require('./routes/cart'));
+app.use('/wishlist', require('./routes/wishlist'));
 app.use('/', require('./routes/web'));
 
 module.exports = app;

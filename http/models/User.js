@@ -52,6 +52,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     require: true,
     default: '{}'
+  },
+  wishlist: {
+    type: String,
+    required: false,
+    default: '{}'
   }
 });
 
