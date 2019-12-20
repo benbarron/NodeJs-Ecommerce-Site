@@ -12,8 +12,23 @@ route.get('/', async (req, res) => {
 });
 
 route.get('/shop', async (req, res) => {
-  return res.render('Shop');
+  const products = await db.Product.find();
+
+  return res.render('Shop', { products });
 });
+
+route.get('/search', async (req, res) => {
+  const { q } = req.query;
+
+
+ const products = await db.Product.find({ $or: [
+    { name: { $regex: q, $options: 'i' } },
+    { category: { $regex: q, $options: 'i' } },
+    { description: { $regex: q, $options: 'i' } }
+  ]});
+ 
+  return res.render('Shop', { products, query: q });
+})
 
 route.get('/products/:_id', async (req, res) => {
   const { _id } = req.params;
@@ -68,7 +83,41 @@ route.get('/checkout', async (req, res) => {
 });
 
 route.get('/contact', async (req, res) => {
-  return res.render('Contact');
+  return res.render('Contact', {
+    contentHeader: {
+      title: 'Contact Form',
+      breadcrumbs: [
+        {
+          label: 'Contact',
+          url: '/contact'
+        }
+      ]
+    }
+  });
+});
+
+route.post('/contact', async (req, res) => {
+  let { name, email, subject, message } = req.body;
+
+  if (!name || !email || !subject || !message) {
+    return res.status(400).json({ error_msg: 'Please enter all fields' });
+  }
+
+  try {
+    const html = `
+      <strong>Name: ${name}</strong>
+      <br/>
+      <strong>Email: ${email}</strong>
+      <br/>
+      <strong>Message: </strong><p>${message}</p>
+    `;
+
+    await mware.sendMail(subject, html);
+  } catch (e) {
+    return res.status(501).json({ error_msg: 'Error: ' + e });
+  }
+
+  return res.json({ success_msg: 'Message has been sent' });
 });
 
 module.exports = route;

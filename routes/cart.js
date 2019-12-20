@@ -12,14 +12,14 @@ route.post('/add', async (req, res) => {
       var optionsArr = req.query.options.split(',');
 
       for (let i = 0; i < optionsArr.length; i++) {
-        var option = optionsArr[i].trim();
-
+        var option = optionsArr[i].trim().replace(',', '');
+        
         if (option != '') {
           options[option] = req.body[option];
         }
       }
     } catch (e) {
-      //
+      return res.redirect('/cart?error_msg=Error')
     }
   }
 

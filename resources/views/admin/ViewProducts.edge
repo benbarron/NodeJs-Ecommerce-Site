@@ -17,6 +17,7 @@
           </tr>
         </thead>
         <tbody>
+          @if(products.length > 0)
           @each(product in products)
             <tr>
               <td>{{ product.name }}</td>
@@ -39,6 +40,14 @@
               </td>
             </tr>
           @endeach
+          @else 
+            <tr>
+              <div class="alert alert-secondary">
+                Your store has no products! 
+                <a href="/products/add">Click here to add a new one.</a>
+              </div>
+            </tr>
+          @endif
         </tbody>
       </table>
     </div>

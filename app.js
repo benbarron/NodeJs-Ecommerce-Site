@@ -14,7 +14,7 @@ app.use(device.capture());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(fileUpload());
+app.use(fileUpload({}));
 
 app.use('/assets', express.static('./public/assets'));
 app.use('/storage', express.static('./public/storage'));
@@ -32,7 +32,7 @@ app.use(
   session({
     store: new MongoStore({
       mongooseConnection: mongoose.connection,
-      ttl: 14 * 24 * 60 * 60
+      ttl: 14 * 24 * 60 * 60 * 1000
     }),
     secret: env('sessionSecret'),
     resave: true,

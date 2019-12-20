@@ -1,15 +1,19 @@
 <div class="content-header" style="padding-top: 60px;margin-bottom:20px;">
     <div class="container container-large">
-      <div class="row d-flex justify-content-between" style="width:100%;">
-        <h1 class="text-dark">{{ contentHeader.title }}</h1>
-        @if(contentHeader.breadcrumbs)
-        <ol class="breadcrumb ">
-          <li class="breadcrumb-item"><a href="/">Home</a></li>
-          @each(breadcrumb in contentHeader.breadcrumbs)
-          <li class="breadcrumb-item"><a href="{{ breadcrumb.url }}">{{ breadcrumb.label }}</a></li>
-          @endeach
-        </ol>
-        @endif
+      <div class="row" style="width:100%;">
+        <div class="col-sm-12">
+          <div class="d-flex justify-content-between">
+            <h1 class="text-dark">{{ contentHeader.title }}</h1>
+            @if(contentHeader.breadcrumbs)
+            <ol class="breadcrumb ">
+              <li class="breadcrumb-item"><a href="/">Home</a></li>
+              @each(breadcrumb in contentHeader.breadcrumbs)
+              <li class="breadcrumb-item"><a href="{{ breadcrumb.url }}">{{ breadcrumb.label }}</a></li>
+              @endeach
+            </ol>
+            @endif
+          </div>
+        </div>
       </div>
     </div>
   </div>

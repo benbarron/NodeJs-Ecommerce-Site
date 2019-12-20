@@ -1,0 +1,31 @@
+<form action="/search" method="GET" class="mb-3">
+    <div class="input-group">
+      <input type="text" class="form-control" name="q" value="{{ query != 'undefined' ? query : '' }}" placeholder="Search">
+      <div class="input-group-append">
+        <button class="btn btn-primary" type="button"><i class="fa fa-search"></i></button>
+      </div>
+    </div>
+    </form>
+<div class="card">
+    <article class="filter-group">
+      <header class="card-header">
+        <a href="#" class="row d-flex justify-content-between" data-toggle="collapse" data-target="#collapse_aside1">
+            <h6 class="title">Categories </h6>
+
+          <i class="icon-control fa fa-chevron-down"></i>
+        </a>
+      </header>
+      <div class="filter-content collapse" id="collapse_aside1">
+        <div class="card-body">
+          
+          <ul class="list-group">
+            <li class="list-group-item"><a href="#">Electronics </a></li>
+            <li class="list-group-item"><a href="#">Electronics </a></li>
+            <li class="list-group-item"><a href="#">Electronics </a></li>
+            
+          </ul>
+  
+        </div> 
+      </div>
+    </article>
+  </div>

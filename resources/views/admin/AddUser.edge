@@ -1,9 +1,85 @@
 @layout('admin/layouts/layout')
 
 @section('content')
+	<div class=" p-3">
+    	<div class="card card-solid">
+     	 	<div class="card-body">
+     	 		<form id="add-user-form">
+     	 			<div class="row">
+     	 				<div class="col-sm-12">
+
+     	 					<div class="d-flex justify-content-between">
+				              	<span>
+				                	<h1>Add User</h1>
+				              	</span>               
+			              		<span>
+			                		<button type="submit" class="btn btn btn-success mt-2">Save User</button>  
+			              		</span> 
+			            	</div>
+			            	<hr >
+
+              				<div class="form-group row mb-4">
+								<label for="firstname-input" class="col-sm-2 col-form-label">User's Firstname</label>
+				                <div class="col-sm-10">
+				                  	<input type="text" name="firstname" class="form-control" id="firstname-input" placeholder="User's Firstname" value="">
+				                </div>
+              				</div>
+
+              				<div class="form-group row mb-4">
+								<label for="lastname-input" class="col-sm-2 col-form-label">User's Lastname</label>
+				                <div class="col-sm-10">
+				                  	<input type="text" name="lastname" class="form-control" id="lastname-input" placeholder="User's Lastname" value="">
+				                </div>
+              				</div>              				
+
+              				<div class="form-group row mb-4">
+								<label for="email-input" class="col-sm-2 col-form-label">User's Email Address</label>
+				                <div class="col-sm-10">
+				                  	<input type="email" name="email" class="form-control" id="email-input" placeholder="User's Email Address" value="">
+				                </div>
+              				</div>  
+
+              				<div class="form-group row mb-4">
+								<label for="username-input" class="col-sm-2 col-form-label">User's Username</label>
+				                <div class="col-sm-10">
+				                  	<input type="text" name="username" class="form-control" id="username-input" placeholder="User's Username" value="">
+				                </div>
+              				</div>                				 
+
+              				<div class="form-group row mb-4">
+								<label for="user-type-input" class="col-sm-2 col-form-label">User Type</label>
+				                <div class="col-sm-10">
+				                  	<select type="text" name="user-type" class="form-control" id="user-type-input" value="">
+										<option value="0" selected="">Non-Admin</option>
+										<option value="1">Admin</option>
+				                  	</select>
+				                </div>
+              				</div>
+
+              				<div class="form-group row mb-4">
+								<label for="password-1-input" class="col-sm-2 col-form-label">User's Password</label>
+				                <div class="col-sm-10">
+				                  	<input type="password" name="password-1" class="form-control" id="password-1-input" placeholder="Password" value="">
+				                </div>
+              				</div> 
+
+              				<div class="form-group row mb-4">
+								<label for="password-2-input" class="col-sm-2 col-form-label">Confirm Password</label>
+				                <div class="col-sm-10">
+				                  	<input type="password" name="password-2" class="form-control" id="password-2-input" placeholder="Confirm Password" value="">
+				                </div>
+              				</div> 
+
+     	 				</div>
+     	 			</div>
+     	 		</form>
+     	 	</div>
+     	</div>
+    </div>
 @endsection
 
 @section('js')
+	<script src="/assets/js/addUser.js"></script>
 @endsection
 
 @section('css')

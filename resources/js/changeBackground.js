@@ -4,6 +4,9 @@ const imageUploadLabelEL = document.querySelector('.custom-file-label');
 const imageUploadFileEL = document.querySelector('#image-upload-file');
 const uploadButtonEL = document.querySelector('button#upload-images');
 const currentBackgroundEL = document.querySelector('img#current-bg-image');
+const progressDivEL = document.querySelector('#upload-progress-div');
+const progressBarEL = document.querySelector('#upload-progress-bar');
+
 var count = 0;
 
 const imagePreviewAreaEL = document.querySelector('#image-preview-area');
@@ -57,6 +60,19 @@ uploadButtonEL.addEventListener('click', e => {
     'Content-Type': 'multipart/form-data'
   };
 
+  // const onUploadProgress = ProgressEvent => {
+  //   progressDivEL.style.display = 'block';
+
+  //   const percent = parseInt(
+  //     Math.round((ProgressEvent.loaded * 100) / ProgressEvent.total)
+  //   );
+
+  //   console.log(percent);
+
+  //   progressBarEL.style.width = percent;
+  //   progressBarEL.innerHTML = percent;
+  // };
+
   axios
     .post('/admin/settings/background', formData, headers)
     .then(res => {
@@ -67,6 +83,8 @@ uploadButtonEL.addEventListener('click', e => {
       var src = currentBackgroundEL.getAttribute('src');
       currentBackgroundEL.setAttribute('src', src + '?q=' + count);
       toastr.success(res.data.success_msg);
+
+      // progressDivEL.display = 'none';
     })
     .catch(err => {
       if (err.response.data.err_msg) {

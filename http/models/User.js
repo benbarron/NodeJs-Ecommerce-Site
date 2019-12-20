@@ -20,6 +20,7 @@ const userSchema = new mongoose.Schema({
   },
   isAdmin: {
     type: Boolean, // 'admin' 1 || 'buyer' 0
+    default: false,
     required: true
   },
   username: {

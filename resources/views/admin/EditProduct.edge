@@ -87,6 +87,8 @@
                                 @endif
                                 <select name="option-{{ $loop.index }}-method" id="option-{{ $loop.index }}-method" class="form-control form-control-sm" aria-label="Small">
                                   <option value="dropdown" class="form-control  form-control-sm" {{ option.method == 'dropdown' ? 'selected' : null}}>Dropdown</option>
+                                  <option value="buttons" class="form-control  form-control-sm" {{ option.method == 'buttons' ? 'selected' : null}}>Buttons</option>
+                                  <option value="radio-buttons" class="form-control  form-control-sm" {{ option.method == 'radio-buttons' ? 'selected' : null}}>Radio Buttons</option>
                                 </select>
                               </div>
                               <div class="col-sm-5">

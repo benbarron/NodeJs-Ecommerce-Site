@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ 	return __webpack_require__(__webpack_require__.s = 4);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -2046,10 +2046,10 @@ process.umask = function() { return 0; };
 
 /***/ }),
 
-/***/ "./resources/js/addProduct.js":
-/*!************************************!*\
-  !*** ./resources/js/addProduct.js ***!
-  \************************************/
+/***/ "./resources/js/addUser.js":
+/*!*********************************!*\
+  !*** ./resources/js/addUser.js ***!
+  \*********************************/
 /*! no exports provided */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2058,117 +2058,52 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
-var addOptionButtonEL = document.querySelector('#add-option-btn');
-var optionsAreaEL = document.querySelector('#options-area');
-var removeOptionButtonEL = document.querySelector('#remove-option-btn');
-var removeImagesButtonEL = document.querySelector('#remove-images-btn');
-var addProductForm = document.querySelector('#add-form');
-var productImageUploads = [];
-var optionCount = 0;
-addOptionButtonEL.addEventListener('click', function (e) {
+var addUserFormEL = document.querySelector('#add-user-form');
+var firstnameEL = document.querySelector('#firstname-input');
+var lastnameEL = document.querySelector('#lastname-input');
+var usernameEL = document.querySelector('#username-input');
+var emailEL = document.querySelector('#email-input');
+var typeEL = document.querySelector('#user-type-input');
+var pass1EL = document.querySelector('#password-1-input');
+var pass2EL = document.querySelector('#password-2-input');
+addUserFormEL.addEventListener('submit', function (e) {
   e.preventDefault();
-  var newOptionRow = document.createElement('div');
-  newOptionRow.className = "row row-".concat(optionCount);
-  var out = "\n    <div class=\"col-sm-12\">\n      <div class=\"mb-2 row\">\n        <div class=\"col-sm-2\">\n          ".concat(optionCount == 0 ? "<label for='option-".concat(optionCount, "-name'>Option Name</label>") : '', "\n          <input type=\"text\" class=\"form-control form-control-sm\" aria-label=\"Small\" id=\"option-").concat(optionCount, "-name\" name=\"option-").concat(optionCount, "-name\" placeholder=\"Option Name\">\n        </div>\n        <div class=\"col-sm-5\">\n          ").concat(optionCount == 0 ? "<label for='option-".concat(optionCount, "-method'>Option Display Method</label>") : '', "\n          <select name=\"option-").concat(optionCount, "-method\" id=\"option-").concat(optionCount, "-method\" class=\"form-control form-control-sm\" aria-label=\"Small\">\n            <option value=\"dropdown\" class=\"form-control  form-control-sm\">Dropdown</option>\n            <option value=\"buttons\" class=\"form-control  form-control-sm\">Buttons</option>\n            <option value=\"radio-buttons\" class=\"form-control  form-control-sm\">Radio Buttons</option>\n          </select>\n        </div>\n        <div class=\"col-sm-5\">\n          ").concat(optionCount == 0 ? "<label for='option-".concat(optionCount, "-values'>Option Values</label>") : '', "\n          <input type=\"text\" class=\"form-control form-control-sm\" aria-label=\"Small\" id=\"option-").concat(optionCount, "-values\" name=\"option-").concat(optionCount, "-values\" placeholder=\"Values (Enter in comma separated list)\">\n          </div>\n        </div>\n        <hr>\n      </div>\n    ");
-  newOptionRow.innerHTML = out;
-  optionsAreaEL.appendChild(newOptionRow);
-  out = '';
-  optionCount += 1;
-});
-removeOptionButtonEL.addEventListener('click', function (e) {
-  e.preventDefault();
+  var firstname = firstnameEL.value;
+  var lastname = lastnameEL.value;
+  var username = usernameEL.value;
+  var email = emailEL.value;
+  var pass1 = pass1EL.value;
+  var pass2 = pass2EL.value;
+  var type = typeEL.value;
 
-  if (optionCount === 0) {
-    return;
-  }
-
-  document.querySelector(".row-".concat(optionCount - 1)).remove();
-  optionCount -= 1;
-});
-removeImagesButtonEL.addEventListener('click', function (e) {
-  e.preventDefault();
-  productImageUploads = [];
-  document.querySelector('#image-previews').innerHTML = '';
-  document.querySelector('#file').value = '';
-});
-document.querySelector('input#file').addEventListener('change', function (e) {
-  e.preventDefault();
-  var file = e.target.files[0];
-
-  if (!file) {
-    return;
-  }
-
-  productImageUploads.push(file);
-  var reader = new FileReader();
-  reader.addEventListener('load', function () {
-    var imageEL = document.createElement('img');
-    imageEL.className = 'image-upload-preview col-sm-2';
-    imageEL.setAttribute('src', reader.result);
-    document.querySelector('#image-previews').appendChild(imageEL);
-  });
-  reader.readAsDataURL(file);
-});
-addProductForm.addEventListener('submit', function (e) {
-  e.preventDefault();
-  var name = document.querySelector('#product-name').value;
-  var price = document.querySelector('#product-price').value;
-  var category = document.querySelector('#product-category').value;
-  var live = document.querySelector('#product-status').value;
-  var details = tinyMCE.activeEditor.getContent();
-  var description = document.querySelector('#product-description').value;
-  var options = [];
-  var i = 0;
-
-  while (1) {
-    try {
-      var obj = {
-        name: document.querySelector('#option-' + i + '-name').value,
-        method: document.querySelector('#option-' + i + '-method').value,
-        values: document.querySelector('#option-' + i + '-values').value
-      };
-    } catch (e) {
-      break;
-    }
-
-    if (!obj.name || !obj.method || !obj.values) {
-      break;
-    }
-
-    options.push(obj);
-    i++;
-  } // console.log({ name, price, category, live, details, description, options, images });
-
-
-  if (!name || !price || !category || !live || !details || !description) {
+  if (!firstname || !lastname || !username || !email || !type || !pass1 || !pass2) {
     return toastr.error('Please enter all fields');
   }
 
-  if (productImageUploads.length < 3) {
-    return toastr.error('Please upload 3 images');
+  if (pass1 !== pass2) {
+    return toastr.error('Password\'s do not match');
   }
 
-  var formData = new FormData();
-  formData.append('name', name);
-  formData.append('price', price);
-  formData.append('category', category);
-  formData.append('live', live);
-  formData.append('details', details);
-  formData.append('description', description);
-  formData.append('options', JSON.stringify(options));
-
-  for (var l = 1; l <= productImageUploads.length; l++) {
-    formData.append('images-' + l, productImageUploads[l - 1]);
+  if (pass1.length < 6) {
+    return toastr.error('Passwords must be at least 6 characters long');
   }
 
-  var headers = {
-    'Content-Type': 'multipart/form-data'
-  };
-  axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/admin/products/store', formData, headers).then(function (res) {
+  axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/admin/users/store', {
+    firstname: firstname,
+    lastname: lastname,
+    username: username,
+    email: email,
+    type: type,
+    password: pass1
+  }).then(function (res) {
+    toastr.clear();
+
     if (res.data.success_msg) {
-      window.location.href = '/admin/products?success_msg=' + res.data.success_msg;
+      toastr.success(res.data.success_msg);
     }
   })["catch"](function (err) {
+    toastr.clear();
+
     if (err.response.data.error_msg) {
       toastr.error(err.response.data.error_msg);
     }
@@ -2177,14 +2112,14 @@ addProductForm.addEventListener('submit', function (e) {
 
 /***/ }),
 
-/***/ 2:
-/*!******************************************!*\
-  !*** multi ./resources/js/addProduct.js ***!
-  \******************************************/
+/***/ 4:
+/*!***************************************!*\
+  !*** multi ./resources/js/addUser.js ***!
+  \***************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/benbarron/Desktop/Projects/node/node-commerce/resources/js/addProduct.js */"./resources/js/addProduct.js");
+module.exports = __webpack_require__(/*! /Users/benbarron/Desktop/Projects/node/node-commerce/resources/js/addUser.js */"./resources/js/addUser.js");
 
 
 /***/ })

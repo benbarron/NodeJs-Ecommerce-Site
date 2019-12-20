@@ -54,6 +54,9 @@ document.querySelector('#add-option-btn').addEventListener('click', e => {
           }
           <select name="option-${optionCount}-method" id="option-${optionCount}-method" class="form-control form-control-sm" aria-label="Small">
             <option value="dropdown" class="form-control  form-control-sm">Dropdown</option>
+            <option value="buttons" class="form-control  form-control-sm">Buttons</option>
+            <option value="radio-buttons" class="form-control  form-control-sm">Radio Buttons</option>
+
           </select>
         </div>
         <div class="col-sm-5">

@@ -1,5 +1,6 @@
 const route = require('express').Router();
 
+const bcrypt = require('bcryptjs');
 const uuid = require('uuid');
 const path = require('path');
 const rimraf = require('rimraf');
@@ -194,7 +195,7 @@ route.get('/settings/background', async (req, res) => {
   return res.render('admin/SettingsBackground');
 });
 
-route.post('/settings/background', async (req, res) => {
+route.post('/settings/background', apiAdmin, async (req, res) => {
   if (!req.files) {
     return res.status(400).json({ error_msg: 'There are no files' });
   }
@@ -203,11 +204,59 @@ route.post('/settings/background', async (req, res) => {
     return res.status(400).json({ error_msg: 'File must be an image' });
   }
 
-  req.files.image.mv(
+  await req.files.image.mv(
     path.resolve(__dirname, '../public/storage/backgrounds/main-background.png')
   );
 
   return res.json({ success_msg: 'Background Changed' });
+});
+
+route.get('/users', webAdmin, async (req, res) => {
+  const users = await db.User.find().select('-password');
+
+  return res.render('admin/ViewUsers', { users });
+});
+
+route.get('/users/add', webAdmin, async (req, res) => {
+  return res.render('admin/AddUser');
+});
+
+route.post('/users/store', apiAdmin, async (req, res) => {
+  const { firstname, lastname, username, email, password } = req.body;
+  var { type } = req.body;
+
+  if(!firstname || !lastname || !username || !email || !type || !password) {
+    return res.status(400).json({ error_msg: 'Please enter all fields' });
+  }
+
+  const existingUser = await db.User.findOne({ username }).or({ email });
+
+  if(existingUser) {
+    return res.status(400).json({ error_msg: 'A user already exists with that email address' });
+  }
+
+  type = type == '0' ? false : true;
+
+  const user = new db.User()
+
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(password, salt);
+
+  user.firstname = firstname;
+  user.lastname = lastname;
+  user.username = username;
+  user.email = email;
+  user.type = type;
+  user.password = hashedPassword;
+
+  try {
+    await user.save();
+  } catch(e) {    
+    return res.status(501).json({ error_msg: 'Internal server error' });
+  }
+
+
+  return res.json({ success_msg: 'User has been created' });
 });
 
 module.exports = route;

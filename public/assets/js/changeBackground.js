@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 5);
+/******/ 	return __webpack_require__(__webpack_require__.s = 7);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -2062,6 +2062,8 @@ var imageUploadLabelEL = document.querySelector('.custom-file-label');
 var imageUploadFileEL = document.querySelector('#image-upload-file');
 var uploadButtonEL = document.querySelector('button#upload-images');
 var currentBackgroundEL = document.querySelector('img#current-bg-image');
+var progressDivEL = document.querySelector('#upload-progress-div');
+var progressBarEL = document.querySelector('#upload-progress-bar');
 var count = 0;
 var imagePreviewAreaEL = document.querySelector('#image-preview-area');
 var fileToUpload;
@@ -2102,14 +2104,23 @@ uploadButtonEL.addEventListener('click', function (e) {
   formData.append('image', fileToUpload);
   var headers = {
     'Content-Type': 'multipart/form-data'
-  };
+  }; // const onUploadProgress = ProgressEvent => {
+  //   progressDivEL.style.display = 'block';
+  //   const percent = parseInt(
+  //     Math.round((ProgressEvent.loaded * 100) / ProgressEvent.total)
+  //   );
+  //   console.log(percent);
+  //   progressBarEL.style.width = percent;
+  //   progressBarEL.innerHTML = percent;
+  // };
+
   axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/admin/settings/background', formData, headers).then(function (res) {
     imageUploadLabelEL.innerHTML = 'Choose file';
     fileToUpload = null;
     imagePreviewAreaEL.innerHTML = '';
     var src = currentBackgroundEL.getAttribute('src');
     currentBackgroundEL.setAttribute('src', src + '?q=' + count);
-    toastr.success(res.data.success_msg);
+    toastr.success(res.data.success_msg); // progressDivEL.display = 'none';
   })["catch"](function (err) {
     if (err.response.data.err_msg) {
       toastr.error(err.response.data.err_msg);
@@ -2122,7 +2133,7 @@ uploadButtonEL.addEventListener('click', function (e) {
 
 /***/ }),
 
-/***/ 5:
+/***/ 7:
 /*!************************************************!*\
   !*** multi ./resources/js/changeBackground.js ***!
   \************************************************/

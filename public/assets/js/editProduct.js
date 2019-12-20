@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -2350,7 +2350,7 @@ document.querySelector('#add-option-btn').addEventListener('click', function (e)
   e.preventDefault();
   var el = document.createElement('div');
   el.className = "row row-".concat(optionCount);
-  var out = "\n    <div class=\"col-sm-12\">\n      <div class=\"mb-2 row\">\n        <div class=\"col-sm-2\">\n          ".concat(optionCount == 0 ? "<label for='option-".concat(optionCount, "-name'>Option Name</label>") : '', "\n          <input type=\"text\" class=\"form-control form-control-sm\" aria-label=\"Small\" id=\"option-").concat(optionCount, "-name\" name=\"option-").concat(optionCount, "-name\" placeholder=\"Option Name\">\n        </div>\n        <div class=\"col-sm-5\">\n          ").concat(optionCount == 0 ? "<label for='option-".concat(optionCount, "-method'>Option Display Method</label>") : '', "\n          <select name=\"option-").concat(optionCount, "-method\" id=\"option-").concat(optionCount, "-method\" class=\"form-control form-control-sm\" aria-label=\"Small\">\n            <option value=\"dropdown\" class=\"form-control  form-control-sm\">Dropdown</option>\n          </select>\n        </div>\n        <div class=\"col-sm-5\">\n          ").concat(optionCount == 0 ? "<label for='option-".concat(optionCount, "-values'>Option Values</label>") : '', "\n          <input type=\"text\" class=\"form-control form-control-sm\" aria-label=\"Small\" id=\"option-").concat(optionCount, "-values\" name=\"option-").concat(optionCount, "-values\" placeholder=\"Values (Enter in comma separated list)\">\n          </div>\n        </div>\n        <hr>\n      </div>\n    ");
+  var out = "\n    <div class=\"col-sm-12\">\n      <div class=\"mb-2 row\">\n        <div class=\"col-sm-2\">\n          ".concat(optionCount == 0 ? "<label for='option-".concat(optionCount, "-name'>Option Name</label>") : '', "\n          <input type=\"text\" class=\"form-control form-control-sm\" aria-label=\"Small\" id=\"option-").concat(optionCount, "-name\" name=\"option-").concat(optionCount, "-name\" placeholder=\"Option Name\">\n        </div>\n        <div class=\"col-sm-5\">\n          ").concat(optionCount == 0 ? "<label for='option-".concat(optionCount, "-method'>Option Display Method</label>") : '', "\n          <select name=\"option-").concat(optionCount, "-method\" id=\"option-").concat(optionCount, "-method\" class=\"form-control form-control-sm\" aria-label=\"Small\">\n            <option value=\"dropdown\" class=\"form-control  form-control-sm\">Dropdown</option>\n            <option value=\"buttons\" class=\"form-control  form-control-sm\">Buttons</option>\n            <option value=\"radio-buttons\" class=\"form-control  form-control-sm\">Radio Buttons</option>\n\n          </select>\n        </div>\n        <div class=\"col-sm-5\">\n          ").concat(optionCount == 0 ? "<label for='option-".concat(optionCount, "-values'>Option Values</label>") : '', "\n          <input type=\"text\" class=\"form-control form-control-sm\" aria-label=\"Small\" id=\"option-").concat(optionCount, "-values\" name=\"option-").concat(optionCount, "-values\" placeholder=\"Values (Enter in comma separated list)\">\n          </div>\n        </div>\n        <hr>\n      </div>\n    ");
   el.innerHTML = out;
   optionsAreaEL.appendChild(el);
   out = '';
@@ -2468,7 +2468,7 @@ document.querySelector('#remove-images-btn').addEventListener('click', function 
 
 /***/ }),
 
-/***/ 2:
+/***/ 3:
 /*!*******************************************!*\
   !*** multi ./resources/js/editProduct.js ***!
   \*******************************************/

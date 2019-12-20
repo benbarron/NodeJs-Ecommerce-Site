@@ -1,7 +1,7 @@
 @layout('layouts/layout')
 @section('content')
-<div class="container container-large">
-  <div class="row py-1" style="width: 100%">
+<div class="container container-large text-center pb-5">
+  <div class="row py-1 m-auto" style="width: 100%">
     <div class="col-sm-12 col-md-6 col-lg-9">
       @if(cart.getItems().length > 0) 
       <div class="card">
@@ -18,24 +18,28 @@
                 </tr>
               </thead>
               <tbody>
-                @if(cart.getItems().length > 0)
                 @each(item in cart.getItems())
                 <tr>
                   <td class="">
-                    <a href="/products/{{ item.cartIndexId.split('===')[0] }}" class="row d-flex">
+                    <a href="/products/{{ item.product._id }}" class="row d-flex">
                       <img src="{{ item.product.image }}" alt="{{ item.product.name }}" class="mr-4" style="width: 50px; height: 50px;">
-                      <h4 class="mr-3" style="text-decoration: none; color: #000;margin-top: 5px;font-size: 20px;">{{ item.product.name }}</h4>
+                      <strong class="mr-3" style="text-decoration: none; color: #000;margin-top: 5px;font-size: 16px;">{{ item.product.name }}</strong>
                   </td>
                   </a>
                   <td>
                     @if(item.options)
-                    @each((value, key) in item.options)
-                    <span>{{ key }}: {{ value }}</span><br>
-                    @endeach
+                      @each((value, key) in item.options)
+                        <strong>{{ key }}: {{ value }}</strong><br>
+                      @endeach
                     @endif
                   </td>
                   <td>
-                    $ {{ item.product.price * item.quantity  }}
+                    @set('totalPrice', item.product.price * item.quantity)
+                    <strong>$ {{ totalPrice.toFixed(2) }}</strong>
+                    @if(item.quantity > 1)
+                      <br>
+                      <small>$ {{ item.product.price }} each</small>
+                    @endif
                   </td>
                   <td>
                     <input type="text" name="{{ item.cartIndexId }}" class="form-control" style="width:80px;" value={{ item.quantity }}>
@@ -45,14 +49,6 @@
                   </td>
                 </tr>
                 @endeach
-                @else 
-                <tr>
-                  <div class="alert alert-secondary">
-                    Your store has no products! 
-                    <a href="/products/add">Click here to add a new one.</a>
-                  </div>
-                </tr>
-                @endif
               </tbody>
             </table>
             <button type="submit" class="btn btn-outline-success float-right">Update Cart</button>
@@ -60,7 +56,7 @@
         </div>
       </div>
       @else 
-      <div class="alert alert-danger " style="width: 100%; height: 50px;">There are no items in your cart</div>
+        <div class="alert alert-secondary " style="width: 100%; height: 50px;">There are no items in your cart</div>
       @endif 
     </div>
     <div class="col-sm-12 col-md-6 col-lg-3">
@@ -99,31 +95,31 @@
             <small>Login to add a product to your wish list</small>
           </div>
           @else 
-          @if(wishlist.getItems().length > 0) 
-          @each(item in wishlist.getItems())
-          <div class="row">
-            <a href="/products/{{ item.cartIndexId.split('===')[0] }}">
-            <small>{{ item.product.name }}</small>
-            </a>
-          </div>
-          <div class="row">
-            <div class="col-sm-3">
-              <img src="{{ item.product.image }}" alt="{{ item.product.name }}" style="width:100%;height:50px;">
+            @if(wishlist.getItems().length > 0) 
+              @each(item in wishlist.getItems())
+              <div class="row">
+                <a href="/products/{{ item.product._id }}">
+                <small>{{ item.product.name }}</small>
+                </a>
+              </div>
+              <div class="row">
+                <div class="col-sm-3">
+                  <img src="{{ item.product.image }}" alt="{{ item.product.name }}" style="width:100%;height:50px;">
+                </div>
+                <div class="col-sm-9">
+                  <form action="/wishlist/transfer-to-cart" method="POST">
+                    <input type="hidden" name="id" value={{ item.cartIndexId}}>
+                    <button class="btn btn-sm btn-outline-primary mt-2 float-right">Move To Cart</button>
+                  </form>
+                </div>
+              </div>
+              <hr class="row">
+              @endeach
+            @else 
+            <div class="row">
+              <small>You have no products in your wish list</small>
             </div>
-            <div class="col-sm-9">
-              <form action="/wishlist/transfer-to-cart" method="POST">
-                <input type="hidden" name="id" value={{ item.cartIndexId}}>
-                <button class="btn btn-sm btn-outline-primary mt-2 float-right">Move To Cart</button>
-              </form>
-            </div>
-          </div>
-          <hr class="row">
-          @endeach
-          @else 
-          <div class="row">
-            <small>You have no products in your wish list</small>
-          </div>
-          @endif
+            @endif
           @endif
         </div>
       </div>
@@ -131,6 +127,6 @@
   </div>
 </div>
 @endsection
+
 @section('js')
-<script src="/assets/js/shoppingCart.js"></script>
 @endsection

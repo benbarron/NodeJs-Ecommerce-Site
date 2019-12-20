@@ -46,12 +46,14 @@
     "https": "^1.0.0",
     "laravel-mix": "^5.0.0",
     "mongoose": "^5.7.11",
+    "nodemailer": "^6.3.1",
     "os": "^0.1.1",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
     "rimraf": "^3.0.0",
-    "uuid": "^3.3.3"
+    "uuid": "^3.3.3",
+    "xoauth2": "^1.2.0"
   },
   "devDependencies": {
     "eslint": "^6.7.1",

@@ -1,5 +1,16 @@
 @layout('layouts/layout')
 
 @section('content')
-
+<div class="container container-large py-5">
+  <div class="row">
+    <div class="col-sm-12 col-md-3">
+      @include('partials/ShopFilters')
+    </div>
+    <div class="col-sm-12 col-md-9">
+    	<div class="row">
+    		@!each(product in products, include = 'partials/SmallProductWidget')
+    	</div>
+    </div>
+  </div>
+</div>
 @endsection

@@ -1,9 +1,11 @@
 {
     "/public/assets/js/addProduct.js": "/public/assets/js/addProduct.js",
+    "/public/assets/js/addUser.js": "/public/assets/js/addUser.js",
     "/public/assets/js/app.js": "/public/assets/js/app.js",
-    "/public/assets/css/app.css": "/public/assets/css/app.css",
     "/public/assets/js/changeBackground.js": "/public/assets/js/changeBackground.js",
+    "/public/assets/js/contact.js": "/public/assets/js/contact.js",
+    "/public/assets/css/app.css": "/public/assets/css/app.css",
     "/public/assets/js/editProduct.js": "/public/assets/js/editProduct.js",
-    "/public/assets/js/shoppingCart.js": "/public/assets/js/shoppingCart.js",
+    "/public/assets/js/editUser.js": "/public/assets/js/editUser.js",
     "/public/assets/js/tinyMceInit.js": "/public/assets/js/tinyMceInit.js"
 }

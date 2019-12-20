@@ -8,8 +8,9 @@ class Cart {
    * tax        -   float
    * total      -   float
    * --------------------------- */
+  taxRate = 0.10;
+
   constructor(oldCart) {
-    this.taxRate = 0.09;
     this.items = oldCart.items || [];
     this.quantity = oldCart.quantity || 0;
     this.tax = oldCart.tax || 0.0;
@@ -55,10 +56,9 @@ class Cart {
     }
 
     if (!exists) {
-      cartIndexId = uuid();
 
       this.items.push({
-        cartIndexId: newProduct._id + '===' + uuid(),
+        cartIndexId: uuid() + uuid(),
         product: newProduct,
         options,
         quantity

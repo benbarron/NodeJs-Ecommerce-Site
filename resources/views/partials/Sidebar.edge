@@ -1,10 +1,9 @@
-
-
-
   <div class="shopping-cart-list">
       <div class="row">
           <h5>Shopping Cart</h5>
       </div>
+      <hr class="row">
+
     <div class="row d-flex justify-content-between">
       <h6>Sub-Total:  </h6> <span>$ {{ cart.getSubTotal().toFixed(2) }}</span>
     </div>
@@ -14,7 +13,9 @@
     <div class="row d-flex justify-content-between">
         <h6>Total:  </h6> <span>$ {{ cart.getTotal().toFixed(2) }}</span>
     </div>
-  
+    
+    <hr class="row">
+
     <div class="row">
       <a href="/cart" class="btn btn-outline-secondary to-checkout-btn">View Shopping Cart</a>
       <a href="/checkout" class="btn btn-outline-primary to-checkout-btn">Proceed To Checkout</a>

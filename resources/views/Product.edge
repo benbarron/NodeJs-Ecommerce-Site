@@ -6,13 +6,13 @@
       <div class="row">
         <div class="col-12 col-sm-6">
           <h3 class="d-inline-block d-sm-none">{{ product.name }}</h3>
-          <div class="col-12">
-            <img id="product-image" src="{{ product.images[0] }}" class="product-image" alt="Product Image">
+          <div class="col-12 text-center">
+            <img id="product-image" src="{{ product.images[0] }}" class="product-image" style="max-height: 400px;width: auto; margin: auto;" alt="Product Image">
           </div>
           <div class="col-12 product-image-thumbs">
             @each(image in product.images)
             <div class="product-image-thumb" >
-              <img src="{{ image }}" alt="Product Image">
+              <img src="{{ image }}" class=""  alt="Product Image">
             </div>
             @endeach
           </div>
@@ -41,6 +41,16 @@
                 <option value="{{ value }}" >{{ value }}</option>
                 @endeach
               </select>
+              @elseif(option.method == 'buttons')
+              <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                @set('name', option.name)
+                @each(value in option.values.split(','))
+                  <label class="btn btn-outline-secondary">
+                    <input type="radio" name="{{ name.trim() }}" value="{{ value }}" id="" autocomplete="off" {{ $loop.index === 0 ? 'checked' : ''}}> 
+                    {{ value }}
+                  </label>
+                @endeach
+                </div>
               @else
               @endif
             </div>
