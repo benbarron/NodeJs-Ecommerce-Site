@@ -6,10 +6,22 @@
     <div class="col-sm-12 col-md-3">
       @include('partials/ShopFilters')
     </div>
-    <div class="col-sm-12 col-md-9">
-    	<div class="row">
-    		@!each(product in products, include = 'partials/SmallProductWidget')
-    	</div>
+    <div class="col-sm-12 col-md-9 px-4">
+      @if(query)
+        <div class="row mb-4">
+          <div class="col-sm-12">
+            <div class="alert alert-secondary" style="width: 100%">
+              Showing {{ products.length }} results for search term '{{ query }}'
+            </div>
+          </div>
+        </div>
+      @endif
+
+      @if(products.length > 0)
+      	<div class="row">
+      		@!each(product in products, include = 'partials/SmallProductWidget')
+      	</div>
+      @endif
     </div>
   </div>
 </div>

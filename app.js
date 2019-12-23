@@ -20,7 +20,7 @@ app.use('/assets', express.static('./public/assets'));
 app.use('/storage', express.static('./public/storage'));
 
 mongoose
-  .connect(env('mongoUri'), {
+  .connect(env('mongoLinuxUri'), {
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true

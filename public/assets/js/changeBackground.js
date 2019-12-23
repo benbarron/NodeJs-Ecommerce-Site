@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 7);
+/******/ 	return __webpack_require__(__webpack_require__.s = 8);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -2133,14 +2133,14 @@ uploadButtonEL.addEventListener('click', function (e) {
 
 /***/ }),
 
-/***/ 7:
+/***/ 8:
 /*!************************************************!*\
   !*** multi ./resources/js/changeBackground.js ***!
   \************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/benbarron/Desktop/Projects/node/node-commerce/resources/js/changeBackground.js */"./resources/js/changeBackground.js");
+module.exports = __webpack_require__(/*! /home/ben/Desktop/node-commerce/resources/js/changeBackground.js */"./resources/js/changeBackground.js");
 
 
 /***/ })

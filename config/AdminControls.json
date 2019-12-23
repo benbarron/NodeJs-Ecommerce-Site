@@ -1,0 +1,11 @@
+{
+	"main-navbar": "navbar-dark navbar-black",
+	"override-nav-color": "#2d3436",
+	
+	"bootstrap-variant": "darkly",
+	
+	"rounded": false,
+	
+	"home-hero-title": "Lorem dser siusdd ferg",
+	"home-hero-subtext": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio, mollitia!"
+}

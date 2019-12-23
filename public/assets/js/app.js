@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -2188,14 +2188,14 @@ document.addEventListener('DOMContentLoaded', function (e) {
 
 /***/ }),
 
-/***/ 1:
+/***/ 2:
 /*!***********************************!*\
   !*** multi ./resources/js/app.js ***!
   \***********************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/benbarron/Desktop/Projects/node/node-commerce/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/ben/Desktop/node-commerce/resources/js/app.js */"./resources/js/app.js");
 
 
 /***/ })

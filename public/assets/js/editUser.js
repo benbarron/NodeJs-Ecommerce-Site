@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 5);
+/******/ 	return __webpack_require__(__webpack_require__.s = 6);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -97,14 +97,14 @@
 
 /***/ }),
 
-/***/ 5:
+/***/ 6:
 /*!****************************************!*\
   !*** multi ./resources/js/editUser.js ***!
   \****************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/benbarron/Desktop/Projects/node/node-commerce/resources/js/editUser.js */"./resources/js/editUser.js");
+module.exports = __webpack_require__(/*! /home/ben/Desktop/node-commerce/resources/js/editUser.js */"./resources/js/editUser.js");
 
 
 /***/ })

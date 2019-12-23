@@ -50,6 +50,14 @@ addUserFormEL.addEventListener('submit', e => {
 			if(res.data.success_msg) {
 				toastr.success(res.data.success_msg);
 			}
+
+				firstnameEL.value = '';
+				lastnameEL.value = '';
+				usernameEL.value = '';
+				emailEL.value = '';
+				pass1EL.value = '';
+				pass2EL.value = '';
+				typeEL.value = '';
 		})
 		.catch(err => {
 			toastr.clear();

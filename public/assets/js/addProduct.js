@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -2177,14 +2177,14 @@ addProductForm.addEventListener('submit', function (e) {
 
 /***/ }),
 
-/***/ 2:
+/***/ 3:
 /*!******************************************!*\
   !*** multi ./resources/js/addProduct.js ***!
   \******************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/benbarron/Desktop/Projects/node/node-commerce/resources/js/addProduct.js */"./resources/js/addProduct.js");
+module.exports = __webpack_require__(/*! /home/ben/Desktop/node-commerce/resources/js/addProduct.js */"./resources/js/addProduct.js");
 
 
 /***/ })

@@ -18,38 +18,35 @@
         </thead>
         <tbody>
           @if(products.length > 0)
-          @each(product in products)
-            <tr>
-              <td>{{ product.name }}</td>
-              <td>{{ product.category }}</td>
-              <td>$ {{ product.price }}</td>
-              <td>
-                @if(product.live)
-                  <span class="badge bg-success">Live</span>
-                @else 
-                  <span class="badge bg-danger">Draft</span>
-                @endif
-              </td>
-              <td>
-                <img class="product-table-image" src="{{ product.images[0] }}" alt="">
-              </td>
-              <td>
-                <a href="/admin/products/edit/{{ product._id }}" class="btn btn-sm btn-outline-primary mr-2">Edit</a>
-                <a href="/admin/products/delete/{{ product._id }}" class="btn btn-sm btn-outline-danger">Delete</a>
-
-              </td>
-            </tr>
-          @endeach
-          @else 
-            <tr>
-              <div class="alert alert-secondary">
-                Your store has no products! 
-                <a href="/products/add">Click here to add a new one.</a>
-              </div>
-            </tr>
-          @endif
+            @each(product in products)
+              <tr>
+                <td>{{ product.name }}</td>
+                <td>{{ product.category }}</td>
+                <td>$ {{ product.price }}</td>
+                <td>
+                  @if(product.live)
+                    <span class="badge bg-success">Live</span>
+                  @else 
+                    <span class="badge bg-danger">Draft</span>
+                  @endif
+                </td>
+                <td>
+                  <img class="product-table-image" src="{{ product.images[0] }}" alt="">
+                </td>
+                <td>
+                  <a href="/admin/products/edit/{{ product._id }}" class="btn btn-sm btn-outline-primary mr-2">Edit</a>
+                  <a href="/admin/products/delete/{{ product._id }}" class="btn btn-sm btn-outline-danger">Delete</a>
+                </td>
+              </tr>
+            @endeach
+          @endif 
         </tbody>
       </table>
+      @if(products.length == 0) 
+        <div class="alert alert-secondary mt-5">
+          Your store doesn't have any products. <a href="/admin/products/add">Click here to create one.</a>
+        </div>
+      @endif
     </div>
   </div>
 </div>

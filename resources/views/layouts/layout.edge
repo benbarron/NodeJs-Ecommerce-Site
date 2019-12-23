@@ -8,6 +8,25 @@
     <link rel="stylesheet" href="/assets/vendor/admin-lte/admin-lte.css">
     <link rel="stylesheet" href="/assets/vendor/toastr/toastr.min.css">
     <link rel="stylesheet" href="/assets/css/app.css">
+
+    @set('bootstrap', config['bootstrap-variant'])
+    @set('rounded', config['rounded'])
+    
+    @if(bootstrap != 'default')
+      <link rel="stylesheet" href="/assets/css/{{ bootstrap }}.css">
+    @endif
+
+    @if(rounded == false)
+      <style>
+        * {
+          border-radius: 0 !important;
+        }
+        .badge {
+          border-radius: 5px !important;
+        }
+      </style>
+    @endif
+
     @!section('css')
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
     <title>NodeJs E-Commerce</title>

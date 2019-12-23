@@ -1,31 +1,98 @@
-<form action="/search" method="GET" class="mb-3">
-    <div class="input-group">
-      <input type="text" class="form-control" name="q" value="{{ query != 'undefined' ? query : '' }}" placeholder="Search">
-      <div class="input-group-append">
-        <button class="btn btn-primary" type="button"><i class="fa fa-search"></i></button>
+    <form action="/search" method="GET" class="mb-3">
+      <div class="input-group">
+        <input type="text" class="form-control" name="q" value="{{ query != 'undefined' ? query : '' }}" placeholder="Search">
+        <div class="input-group-append">
+          <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
+        </div>
       </div>
-    </div>
     </form>
-<div class="card">
-    <article class="filter-group">
-      <header class="card-header">
-        <a href="#" class="row d-flex justify-content-between" data-toggle="collapse" data-target="#collapse_aside1">
-            <h6 class="title">Categories </h6>
 
-          <i class="icon-control fa fa-chevron-down"></i>
-        </a>
-      </header>
-      <div class="filter-content collapse" id="collapse_aside1">
-        <div class="card-body">
-          
-          <ul class="list-group">
-            <li class="list-group-item"><a href="#">Electronics </a></li>
-            <li class="list-group-item"><a href="#">Electronics </a></li>
-            <li class="list-group-item"><a href="#">Electronics </a></li>
-            
-          </ul>
-  
-        </div> 
-      </div>
-    </article>
-  </div>
+    <div class="card">
+      <article class="filter-group">
+        <header class="card-header">
+          <a href="#" class="row d-flex justify-content-between " data-toggle="collapse" data-target="#collapse_aside1">
+              <h6 class="title">Categories </h6>
+            <i class="icon-control fa fa-chevron-down"></i>
+          </a>
+        </header>
+        <div class="filter-content show" id="collapse_aside1">
+          <div class="card-body p-0">
+            <ul class="list-group">
+              <li class="list-group-item rounded-0">
+                <a href="/shop">All Categories</a>
+              </li>
+              
+              @each(cat in categories) 
+                <li class="list-group-item rounded-0">
+                  <a href="/search?cat={{ cat }}">{{ cat }}</a>
+                </li>
+              @endeach
+            </ul>
+          </div> 
+        </div>
+      </article>
+    </div>
+
+    <div class="card">
+      <article class="filter-group">
+        <header class="card-header">
+          <a href="#" class="row d-flex justify-content-between " data-toggle="collapse" data-target="#collapse_aside2">
+              <h6 class="title">Filter By Price </h6>
+            <i class="icon-control fa fa-chevron-down"></i>
+          </a>
+        </header>
+        <div class="filter-content show" id="collapse_aside2">
+          <div class="card-body p-0">
+            <ul class="list-group">
+              <li class="list-group-item rounded-0">
+                <form id="price-filter-form">
+                  <input type="text" name="lower" id="lower-price-value" class="form-control" value="{{ lower ? lower : '' }}" placeholder="Lower">
+                  <br>
+                  <input type="text" name="upper" id="upper-price-value" class="form-control" value="{{ upper ? upper : '' }}" placeholder="Upper">
+                  <br>
+                  <button type="submit" class="btn btn-sm btn-primary">Apply Filter</button>
+                </form>
+              </li>
+            </ul>
+          </div> 
+        </div>
+      </article>
+    </div>
+
+    <script>
+      document
+        .querySelector('#price-filter-form')
+        .addEventListener('submit', e => {
+          e.preventDefault();
+
+          var upper = Number(document.querySelector('#upper-price-value').value);
+          var lower = Number(document.querySelector('#lower-price-value').value);
+
+          if(!lower) {
+            lower = 0;
+          }
+
+          if(!upper) {
+            upper = 1000000000000;
+          }
+
+          if(lower > upper) {
+            return toastr.error('Please make lower price less than upper price');
+          }
+
+          document
+            .querySelectorAll('.product-widget')
+            .forEach(prod => {
+              prod.classList.remove('hide');
+
+              var price = Number(prod.getAttribute('data-price'));
+
+              console.log(price, lower, upper)
+
+              if(price < lower || price > upper) {
+                prod.classList.add('hide');
+                console.log(prod)
+              }
+            })
+        })
+    </script>

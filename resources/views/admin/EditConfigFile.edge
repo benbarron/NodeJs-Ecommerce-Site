@@ -1,0 +1,45 @@
+@layout('admin/layouts/layout')
+
+@section('content')
+	 <div class=" p-3">
+    <div class="card card-solid">
+      <div class="card-body">
+        <form action="/admin/settings/config/update" method="POST" id="update-config-form">
+        	<div class="row">
+          	<div class="col-sm-12">
+            	<div class="d-flex justify-content-between">
+              	<span>
+                	<h1>Update Config File</h1>
+              	</span>               
+              	<span>
+                	<button type="submit" class="btn btn btn-success mt-2">Save File</button>  
+              	</span> 
+            	</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-12">
+							<pre id="config-editor">{{ fileContents }}</pre>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+@endsection
+
+@section('js')
+	<script src="/assets/vendor/ace/build/src/ace.js"></script>
+	<script src="/assets/vendor/ace/build/src/ext-language_tools.js"></script>
+	<script src="/assets/vendor/ace/build/src/ext-beautify.js"></script>
+	<script src="/assets/js/editConfig.js"></script>
+@endsection
+
+@section('css')
+	<style>
+		#config-editor {
+			position: relative;
+			height: 500px;
+		}
+	</style>
+@endsection

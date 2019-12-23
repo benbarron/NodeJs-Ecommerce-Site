@@ -1,3 +1,6 @@
+const fs = require('fs');
+const path = require('path');
+
 module.exports = (req, res, next) => {
   res.locals.isAuthenticated = req.isAuthenticated();
   res.locals.path = req.path;
@@ -5,5 +8,12 @@ module.exports = (req, res, next) => {
   res.locals.cart = req.session.cart;
   res.locals.wishlist = req.session.wishlist;
 
-  next();
+  fs.readFile(path.resolve(rootDirectory, 'config/AdminControls.json'), 'utf-8', (err, data) => {
+  	try {
+  		res.locals.config = JSON.parse(data);
+  	} catch(e) {
+  		res.locals.config = {};
+  	}
+  	next();
+  });
 };

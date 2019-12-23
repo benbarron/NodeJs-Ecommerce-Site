@@ -211,6 +211,28 @@ route.post('/settings/background', apiAdmin, async (req, res) => {
   return res.json({ success_msg: 'Background Changed' });
 });
 
+route.get('/settings/config', webAdmin, async (req, res) => {
+  fs.readFile(path.resolve(rootDirectory, 'config', 'AdminControls.json'), 'utf-8', (err, data) => {
+    if(err) {
+      return res.redirect('/admin?error_msg=There was an internal server error');
+    }
+
+    return res.render('admin/EditConfigFile', { fileContents: data });
+  });
+});
+
+route.post('/settings/config/update', apiAdmin, async (req, res) => {
+  const { data } = req.body;
+
+  fs.writeFile(path.resolve(rootDirectory, 'config', 'AdminControls.json'), data, err => {
+    if(err) {
+      return res.json({ error_msg: 'There was an error saving file. Please try again '});
+    }
+
+    return res.json({ success_msg: 'Configuration File Save Successfully' });
+  });
+});
+
 route.get('/users', webAdmin, async (req, res) => {
   const users = await db.User.find().select('-password');
 

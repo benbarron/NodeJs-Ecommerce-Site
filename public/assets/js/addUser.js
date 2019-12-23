@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -2101,6 +2101,14 @@ addUserFormEL.addEventListener('submit', function (e) {
     if (res.data.success_msg) {
       toastr.success(res.data.success_msg);
     }
+
+    firstnameEL.value = '';
+    lastnameEL.value = '';
+    usernameEL.value = '';
+    emailEL.value = '';
+    pass1EL.value = '';
+    pass2EL.value = '';
+    typeEL.value = '';
   })["catch"](function (err) {
     toastr.clear();
 
@@ -2112,14 +2120,14 @@ addUserFormEL.addEventListener('submit', function (e) {
 
 /***/ }),
 
-/***/ 4:
+/***/ 5:
 /*!***************************************!*\
   !*** multi ./resources/js/addUser.js ***!
   \***************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/benbarron/Desktop/Projects/node/node-commerce/resources/js/addUser.js */"./resources/js/addUser.js");
+module.exports = __webpack_require__(/*! /home/ben/Desktop/node-commerce/resources/js/addUser.js */"./resources/js/addUser.js");
 
 
 /***/ })

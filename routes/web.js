@@ -13,22 +13,39 @@ route.get('/', async (req, res) => {
 
 route.get('/shop', async (req, res) => {
   const products = await db.Product.find();
+  const categories = await db.Product.find().distinct('category');
 
-  return res.render('Shop', { products });
+  return res.render('Shop', { products, categories });
 });
 
 route.get('/search', async (req, res) => {
-  const { q } = req.query;
+  const { q, cat } = req.query;
+
+  let products;
+  let searchOptions;
+
+  if(cat && !q) {
+    searchOptions = { $or: [
+      { category: { $regex: cat, $options: 'i' } }
+    ]};
+  } else if(q){
+    searchOptions = { $or: [
+      { name: { $regex: q, $options: 'i' } },
+      { category: { $regex: q, $options: 'i' } },
+      { description: { $regex: q, $options: 'i' } }
+    ]};
+  } else {
+    searchOptions = {};
+  }
+
+  products = await db.Product.find(searchOptions);
+
+  const categories = await db.Product.find().distinct('category');
+
+  return res.render('Shop', { products, query: q, category: cat, categories });
+});
 
 
- const products = await db.Product.find({ $or: [
-    { name: { $regex: q, $options: 'i' } },
-    { category: { $regex: q, $options: 'i' } },
-    { description: { $regex: q, $options: 'i' } }
-  ]});
- 
-  return res.render('Shop', { products, query: q });
-})
 
 route.get('/products/:_id', async (req, res) => {
   const { _id } = req.params;

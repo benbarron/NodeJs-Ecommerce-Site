@@ -4,8 +4,12 @@
     "/public/assets/js/app.js": "/public/assets/js/app.js",
     "/public/assets/js/changeBackground.js": "/public/assets/js/changeBackground.js",
     "/public/assets/js/contact.js": "/public/assets/js/contact.js",
+    "/public/assets/js/editConfig.js": "/public/assets/js/editConfig.js",
     "/public/assets/css/app.css": "/public/assets/css/app.css",
+    "/public/assets/css/darkly.css": "/public/assets/css/darkly.css",
+    "/public/assets/css/sandstone.css": "/public/assets/css/sandstone.css",
     "/public/assets/js/editProduct.js": "/public/assets/js/editProduct.js",
     "/public/assets/js/editUser.js": "/public/assets/js/editUser.js",
-    "/public/assets/js/tinyMceInit.js": "/public/assets/js/tinyMceInit.js"
+    "/public/assets/js/tinyMceInit.js": "/public/assets/js/tinyMceInit.js",
+    "/public/assets/js/viewUsers.js": "/public/assets/js/viewUsers.js"
 }

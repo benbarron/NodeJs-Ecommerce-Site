@@ -1,20 +1,20 @@
 {
-  "name": "NodeJs E-Commerce App",
-  "url": "http://localhost",
-  "debug": false,
+    "name": "NodeJs E-Commerce App",
+    "url": "http://localhost",
+    "debug": false,
 
-  "mode": "DEVELOPMENT",
-  "port": 5000,
+    "mode": "DEVELOPMENT",
+    "port": 5000,
 
-  "mongoUri": "mongodb://benjaminbarron:<>@localhost:27017/test",
-  "mongoLinuxUri": "mongodb://ben:<>@localhost:27017/tasks",
+    "mongoUri": "mongodb://benjaminbarron:<>x@localhost:27017/test",
+    "mongoLinuxUri": "mongodb://ben:<>@localhost:27017/tasks",
 
-  "jwtSecret": "qyvnz6z1K6-9372Wu1mTz-T4USCthjNl-ZLaqeeuKqf-hBV7PdE2wg------change-for-deployment",
-  "jwtLifetime": 1209600,
+    "jwtSecret": "qyvnz6z1K6-9372Wu1mTz-T4USCthjNl-ZLaqeeuKqf-hBV7PdE2wg------change-for-deployment",
+    "jwtLifetime": 1209600,
 
-  "sessionSecret": "NHiAXMrdDN-qiCgKHZgDt-wyYzHSzlhZ-pHIv1eDB5M-jKFVfqgNoh-------change-for-deployment",
-  "sessionLifetime": 12096000,
+    "sessionSecret": "NHiAXMrdDN-qiCgKHZgDt-wyYzHSzlhZ-pHIv1eDB5M-jKFVfqgNoh-------change-for-deployment",
+    "sessionLifetime": 12096000,
 
-  "emailUser": "ben7barron@gmail.com",
-  "emailPassword": "<>"
+    "emailUser": "ben7barron@gmail.com",
+    "emailPassword": "<>"
 }
