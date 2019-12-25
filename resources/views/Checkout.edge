@@ -1,5 +1,139 @@
 @layout('layouts/layout')
 
 @section('content')
+<div class="container container-large text-center pb-5">
+  <div class="row py-1 m-auto" style="width: 100%">
+  	<div class="col-sm-12 col-md-6">
+  		<div class="card">
+  				<div class="card-body">
+  					<div class="row">
+  						<h5>Review Order</h5>
+  					</div>
+  					
+  					<hr class="row">
 
+						@each(item in cart.getItems())
+							<div class="row d-flex justify-content-between">
+								@set('totalPrice', item.product.price * item.quantity)
+								<span>{{ item.product.name }} (Qty: {{ item.quantity }})</span>
+								<span>$ {{ totalPrice.toFixed(2) }}</span>
+							</div>
+						@endeach
+
+
+          <hr class="row">
+          <div class="row d-flex justify-content-between">
+            <h6>Sub Total</h6>
+            <h6>$ {{ cart.getSubTotal().toFixed(2) }}</h6>
+          </div>
+          <div class="row d-flex justify-content-between">
+            <h6>Tax</h6>
+            <h6>$ {{ cart.getTax().toFixed(2) }}</h6>
+          </div>
+          <div class="row d-flex justify-content-between ">
+            <h6>Total</h6>
+            <h6>$ {{ cart.getTotal().toFixed(2) }}</h6>
+          </div>
+          <hr class="row">
+
+  				</div>
+  			</div>	
+  	</div>
+  	<div class="col-sm-12 col-md-6">
+  		<div class="card">
+  			<div class="card-body">
+  				@if(addresses)
+  					<div class="row">
+  						<h5>Saved Addresses</h5>
+  					</div>
+						
+						<br>
+		  			
+		  			<div class="row">
+
+	  					@each(address in addresses)
+	  						<div class="col-sm-4">
+			  					<button class="btn btn-sm btn-outline-secondary saved-address-btn" 
+			  									style="width: 100%;" 
+			  									data-address="{{ address.address }}"
+													data-city="{{ address.city }}"
+													data-state="{{ address.state }}"
+			  									data-zip="{{ address.zip }}">
+			  						{{ address.address }}
+			  						<br>
+			  						{{ address.city + ', ' + address.state + ' ' + address.zip }}
+			  					</button>
+		  					</div>
+	  					@endeach
+		  			</div>	
+
+	  				<hr class="row">
+
+  				@endif
+
+  		   	<div class="row">
+						<form action="/checkout" method="POST" id="payment-form" style="width:100%;">
+							@set('total', cart.getTotal().toFixed(2) * 100)
+							
+							@if(!name)
+								@if(user)
+									@set('name', user.firstname + ' ' + user.lastname)
+								@else 
+									@set('name', '')
+								@endif
+							@endif
+							
+							<div class="form-group mb-4">
+								<input type="text" name="name" class="form-control" placeholder="Name" value="{{ name }}" id="name-input">
+							</div>
+	
+							<div class="form-group mb-4">
+								<input type="text" name="address" class="form-control" placeholder="Street Address" value="{{ address ? address : '' }}" id="address-input">
+							</div>
+
+							<div class="form-group mb-4">
+								<input type="text" name="city" class="form-control" placeholder="City" value="{{ city ? city : '' }}" id="city-input">
+							</div>
+
+							<div class="form-group mb-4">
+								<input type="text" name="state" class="form-control" placeholder="State" value="{{ state ? state : '' }}" id="state-input">
+							</div>
+
+							<div class="form-group mb-4">
+								<input type="text" name="zip" class="form-control" placeholder="Zip Code" value="{{ zip ? zip : '' }}" id="zip-input">
+							</div>
+
+							<script
+								src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+								data-key="pk_test_mmqNLDfSca3GUlWeXWTvxi6u00FZ2b3BY3"
+								data-amount="{{ total }}"
+								data-email="{{ user ? user.email : ''}}"
+								data-description="Stripe Payment"
+								data-image="/assets/img/logo.png"
+								data-locale="auto"
+							></script>
+							<script>document.querySelector('.stripe-button-el').style.display = 'none';</script>
+							<input type="hidden" name="amount" value="{{ total }}">
+							<button type="submit" class="btn btn-sm btn-outline-primary" style="width:100%;">Enter Card With Stripe</button>
+						</form>          	
+          </div>
+        </div>
+      </div>
+  	</div>
+  </div>
+</div>
+@endsection
+
+@section('js')
+	<script>
+		document
+			.querySelectorAll('.saved-address-btn').forEach(btn => {
+				btn.addEventListener('click', e => {
+					document.querySelector("#address-input").value = e.target.getAttribute('data-address');
+					document.querySelector("#city-input").value = e.target.getAttribute('data-city');
+					document.querySelector("#state-input").value = e.target.getAttribute('data-state');
+					document.querySelector("#zip-input").value = e.target.getAttribute('data-zip');
+				});
+			});
+	</script>
 @endsection

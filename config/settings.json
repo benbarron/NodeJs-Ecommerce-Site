@@ -6,15 +6,18 @@
     "mode": "DEVELOPMENT",
     "port": 5000,
 
-    "mongoUri": "mongodb://benjaminbarron:<>x@localhost:27017/test",
-    "mongoLinuxUri": "mongodb://ben:<>@localhost:27017/tasks",
+    "stripeSecretKey": "<>",
+    "stripePublicKey": "<>",
 
-    "jwtSecret": "qyvnz6z1K6-9372Wu1mTz-T4USCthjNl-ZLaqeeuKqf-hBV7PdE2wg------change-for-deployment",
+    "mongoUri": "mongodb://<>:<>@localhost:27017/<>",
+    "mongoLinuxUri": "mongodb://<>:<>@localhost:27017/<>",
+
+    "jwtSecret": "<>",
     "jwtLifetime": 1209600,
 
-    "sessionSecret": "NHiAXMrdDN-qiCgKHZgDt-wyYzHSzlhZ-pHIv1eDB5M-jKFVfqgNoh-------change-for-deployment",
+    "sessionSecret": "<>",
     "sessionLifetime": 12096000,
 
-    "emailUser": "ben7barron@gmail.com",
+    "emailUser": "<>@gmail.com",
     "emailPassword": "<>"
 }
